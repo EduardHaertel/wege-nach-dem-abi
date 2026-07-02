@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Die Karte, die niemand zeigt · Wege nach dem Abi</title>
+<meta name="description" content="Studium, Ausland, Stipendien & Startups — die konkreten Wege und Ressourcen von Absolvent:innen des Heinrich-Hertz-Gymnasiums Berlin.">
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel-2:#1c2330; --line:#2a3342;
+    --ink:#e6edf3; --muted:#9aa7b4; --accent:#4f9dff; --accent-2:#7ee787;
+    --warn:#ffb454; --chip:#21324a;
+    --radius:14px; --maxw:920px;
+    --sans:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+  /* HERO */
+  header.hero{
+    padding:64px 0 40px;
+    background:
+      radial-gradient(1200px 400px at 80% -10%, rgba(79,157,255,.18), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(126,231,135,.10), transparent 60%);
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);font-weight:600;margin:0 0 14px}
+  h1{font-size:clamp(1.9rem,5vw,3rem);line-height:1.12;margin:0 0 16px;font-weight:800;letter-spacing:-.02em}
+  h1 .thin{color:var(--muted);font-weight:500}
+  .lede{font-size:clamp(1.02rem,2.2vw,1.22rem);color:var(--muted);max-width:60ch;margin:0 0 26px}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-block;padding:11px 18px;border-radius:10px;font-weight:600;font-size:.95rem;border:1px solid var(--line);background:var(--panel-2);color:var(--ink)}
+  .btn.primary{background:var(--accent);color:#04101f;border-color:transparent}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  .btn{transition:transform .12s ease}
+
+  section{padding:52px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(1.4rem,3.5vw,2rem);margin:0 0 8px;letter-spacing:-.01em}
+  h2 .num{color:var(--accent);font-size:.7em;font-weight:700;margin-right:.5rem;vertical-align:.12em}
+  .sub{color:var(--muted);margin:0 0 26px;max-width:65ch}
+
+  /* KEY MESSAGE */
+  .message{
+    background:linear-gradient(180deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line);border-left:3px solid var(--accent-2);
+    border-radius:var(--radius);padding:22px 24px;margin:8px 0 0;
+  }
+  .message strong{color:var(--accent-2)}
+
+  /* TABLE (QS-style) */
+  .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:.94rem}
+  thead th{
+    text-align:left;padding:13px 16px;background:var(--panel-2);color:var(--muted);
+    font-weight:600;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
+    border-bottom:1px solid var(--line);position:sticky;top:0;
+  }
+  tbody td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:rgba(79,157,255,.05)}
+  .count{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:26px;padding:0 8px;border-radius:20px;background:var(--chip);color:var(--ink);font-weight:700;font-size:.9rem}
+  .field{color:var(--accent-2);font-weight:600}
+  .place{color:var(--muted)}
+  .note{color:var(--muted);font-size:.82rem}
+  .flag{color:var(--warn);font-size:.78rem}
+
+  /* CHIP GRID for fields */
+  .fieldgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:6px}
+  .fcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .fcard .b{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .fcard .name{font-weight:700}
+  .fcard .cities{color:var(--muted);font-size:.85rem;margin-top:4px}
+
+  /* PATHS from Vortragsplan */
+  .paths{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  .path{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .path .topic{font-weight:600;margin:0 0 6px}
+  .path .who{color:var(--muted);font-size:.86rem}
+  .path .tag{display:inline-block;margin-top:10px;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:rgba(79,157,255,.1);padding:3px 9px;border-radius:20px}
+
+  /* TIMELINE */
+  .timeline{display:grid;gap:14px}
+  .tl{display:grid;grid-template-columns:120px 1fr;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .tl .when{font-weight:800;color:var(--accent);font-size:.95rem}
+  .tl ul{margin:0;padding-left:18px}
+  .tl li{margin:2px 0}
+  @media(max-width:560px){.tl{grid-template-columns:1fr}.tl .when{color:var(--accent-2)}}
+
+  /* RESOURCES */
+  .rescat{margin-top:22px}
+  .rescat h3{margin:0 0 12px;font-size:1.05rem;color:var(--ink)}
+  .reslist{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .res{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px;color:var(--ink);transition:border-color .15s,transform .12s}
+  .res:hover{border-color:var(--accent);transform:translateY(-1px);text-decoration:none}
+  .res .rt{font-weight:600}
+  .res .rd{color:var(--muted);font-size:.83rem;margin-top:3px}
+  .res .arrow{float:right;color:var(--muted)}
+
+  footer{padding:40px 0 60px;color:var(--muted);font-size:.88rem}
+  footer a{color:var(--accent)}
+  .disclaimer{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;color:var(--muted);font-size:.85rem;margin-top:18px}
+  .kicker{color:var(--accent-2);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Heinrich-Hertz-Gymnasium Berlin · Absolvent:innen</p>
+    <h1>Die Karte, die niemand zeigt.<br><span class="thin">Wohin man nach dem Abi wirklich gehen kann.</span></h1>
+    <p class="lede">Studium, Ausland, Stipendien, Startup — echte Wege echter Absolvent:innen unserer Schule. Plus die Ressourcen, die wirklich genutzt wurden. Fang jetzt an, deine eigene Karte zu bauen.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#wege">Wege ansehen</a>
+      <a class="btn" href="#ressourcen">Ressourcen &amp; Links</a>
+      <a class="btn" href="#jetzt">Was du jetzt tun kannst</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ KERNBOTSCHAFT ============ -->
+<section id="idee">
+  <div class="wrap">
+    <h2><span class="num">01</span>Warum überhaupt eine Karte?</h2>
+    <p class="sub">Die meisten fangen mit 17 an, über ihren Weg nachzudenken — das ist oft zu spät für Stipendien, Auslandsjahre und Fristen. Mit 14 kann man schon Aktivitäten aufnehmen, die später zählen.</p>
+    <div class="message">
+      <strong>Orientierung schlägt Talent-Warten.</strong> Es geht nicht darum, mit 14 alles zu wissen — sondern anzufangen, die eigene Karte zu bauen. Pre-Docs, Sommerschulen, Research Assistantships, Stipendien: <em>Die existieren. Die meisten wissen nur nicht, dass es sie gibt.</em>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QS-STYLE UNI/FELD TABELLE ============ -->
+<section id="wege">
+  <div class="wrap">
+    <h2><span class="num">02</span>Wohin gehen die Leute?</h2>
+    <p class="sub">Anonym gebündelt: Studienfeld, Ort und wie viele diesen Weg gegangen sind — aus dem Jahrgang der Referent:innen. Namen sind bewusst weggelassen; es geht um die <em>Richtungen</em>, nicht um Personen.</p>
+
+    <div class="table-scroll">
+      <table id="uniTable">
+        <thead>
+          <tr>
+            <th>Studienfeld</th>
+            <th>Wo / Uni</th>
+            <th>Anzahl</th>
+            <th>Anmerkung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="field">Medizin</span></td><td class="place">Berlin (Charité) · Heidelberg</td><td><span class="count">2</span></td><td class="note">klassischer NC-Weg + Alternativen</td></tr>
+          <tr><td><span class="field">Physik</span></td><td class="place">Freiburg · Berlin (HU)</td><td><span class="count">2</span></td><td class="note">forschungsnah, früh Kontakte knüpfen</td></tr>
+          <tr><td><span class="field">Informatik / IT</span></td><td class="place">Berlin (HTW)</td><td><span class="count">2</span></td><td class="note">praxisnah, gute Werkstudenten-Lage</td></tr>
+          <tr><td><span class="field">Jura</span></td><td class="place">Berlin (HU) — fremdsprachig</td><td><span class="count">1</span></td><td class="note">z.&nbsp;B. Moot Court + FNS-Stipendium</td></tr>
+          <tr><td><span class="field">Bundeswehr</span></td><td class="place">—</td><td><span class="count">1</span></td><td class="note">Studium + Laufbahn kombiniert</td></tr>
+          <tr><td><span class="field">Weitere Wege</span></td><td class="place">noch offen / in Klärung</td><td><span class="count">8</span></td><td class="flag">wird ergänzt</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="note" style="margin-top:12px">Basis: Jahrgang der Vortragenden dieses Treffens. Einzelne Angaben stammen aus öffentlich Auffindbarem und sind <span class="flag">nicht abschließend verifiziert</span>. Kein Anspruch auf Vollständigkeit — die Tabelle wächst.</p>
+
+    <h3 style="margin:32px 0 6px;font-size:1.05rem">Felder auf einen Blick</h3>
+    <div class="fieldgrid" id="fieldGrid"><!-- gefüllt per JS --></div>
+  </div>
+</section>
+
+<!-- ============ ABSOLVENTEN-WEGE AUS VORTRAGSPLAN ============ -->
+<section id="vorbilder">
+  <div class="wrap">
+    <h2><span class="num">03</span>Was Ehemalige heute machen</h2>
+    <p class="sub">Themen der Absolvent:innen-Vorträge dieses Treffens — quer durch die Jahrgänge. Jeder Punkt ist ein realer Weg: von Kernfusion über Medizin bis zum Gründen.</p>
+    <div class="paths" id="pathsGrid"><!-- gefüllt per JS --></div>
+  </div>
+</section>
+
+<!-- ============ WAS JETZT ZÄHLT (7-10) ============ -->
+<section id="klasse7">
+  <div class="wrap">
+    <h2><span class="num">04</span>Klasse 7–10: Was jetzt schon zählt</h2>
+    <p class="sub">Nicht Schulfächer — Werkzeuge und Türöffner. Vieles davon habt ihr schon (MINT-EC!), ihr müsst es nur nutzen.</p>
+    <div class="reslist">
+      <div class="res"><span class="rt">Englisch als Werkzeug</span><div class="rd">Nicht als Fach denken — als Zugang zu allem: Programme, Paper, Bewerbungen.</div></div>
+      <div class="res"><span class="rt">Auslandsjahr: AFS, YFU</span><div class="rd">Fristen laufen früh — oft &gt;1 Jahr vorher. Jetzt informieren.</div></div>
+      <div class="res"><span class="rt">Wettbewerbe &amp; Olympiaden</span><div class="rd">Mathe-, Physik- &amp; Co.-Olympiaden. Zählen später für Stipendien.</div></div>
+      <div class="res"><span class="rt">AG-Mitgliedschaften</span><div class="rd">Kontinuität &gt; Vielfalt. Dranbleiben zahlt sich aus.</div></div>
+      <div class="res"><span class="rt">Studienstiftung</span><div class="rd">Schulnominierung in Klasse 11 — sei vorher auf dem Schirm.</div></div>
+      <div class="res"><span class="rt">DAAD RISE · Erasmus+</span><div class="rd">Auch Praktika, nicht nur Semester.</div></div>
+      <div class="res"><span class="rt">MINT-EC</span><div class="rd">Ihr seid schon drin. Nutzt Camps, Zertifikate, Netzwerk.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE KLASSE 11 ============ -->
+<section id="jetzt">
+  <div class="wrap">
+    <h2><span class="num">05</span>Klasse 11: Die nächsten 12 Monate</h2>
+    <p class="sub">Konkret, mit Zeitachse. Parallel zu den deutschen NC-Bewerbungen läuft eine ganze zweite Welt — wenn man sie kennt.</p>
+    <div class="timeline">
+      <div class="tl"><div class="when">Jetzt</div><div><ul>
+        <li>Internationale Uni-Bewerbungen: <strong>Common App</strong> vorbereiten</li>
+        <li>Sprachzertifikate planen: <strong>IELTS / TOEFL</strong></li>
+        <li>Erste <strong>UCAS</strong>-Fristen im Blick behalten</li>
+        <li>Stipendienanträge vorbereiten — parallel zu NC-Bewerbungen</li>
+      </ul></div></div>
+      <div class="tl"><div class="when">Frühjahr</div><div><ul>
+        <li>Bewerbungen finalisieren &amp; abschicken</li>
+        <li>Pre-College-Programme recherchieren</li>
+        <li>Research Internships anfragen</li>
+      </ul></div></div>
+      <div class="tl"><div class="when">Sommer</div><div><ul>
+        <li>Pre-College-Programme &amp; Research Internships antreten</li>
+        <li>Strukturiertes <strong>Gap Year</strong> planen (nicht „einfach frei")</li>
+        <li>Pre-Docs, Sommerschulen, Research Assistantships — gibt's wirklich</li>
+      </ul></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESSOURCEN ============ -->
+<section id="ressourcen">
+  <div class="wrap">
+    <h2><span class="num">06</span>Ressourcen — die wirklich genutzt wurden</h2>
+    <p class="sub">Keine endlose Linkliste. Nur die, die von Absolvent:innen tatsächlich verwendet wurden. Genau die aus den Folien — hier klickbar.</p>
+
+    <div class="rescat">
+      <h3>Stipendien &amp; Begabtenförderung</h3>
+      <div class="reslist">
+        <a class="res" href="https://www.studienstiftung.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Studienstiftung des dt. Volkes</span><div class="rd">Größtes Begabtenförderungswerk. Schulnominierung ab Kl. 11.</div></a>
+        <a class="res" href="https://www.daad.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">DAAD (RISE, Graduierten­förderung)</span><div class="rd">Auslandspraktika &amp; Forschung, auch früh.</div></a>
+        <a class="res" href="https://www.boell.de/de/stipendien" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Heinrich-Böll-Stiftung</span><div class="rd">Parteinah (Grüne), stark bei Nachhaltigkeit.</div></a>
+        <a class="res" href="https://www.kas.de/de/web/begabtenfoerderung-und-kultur/studienfoerderung" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Konrad-Adenauer-Stiftung (KAS)</span><div class="rd">Parteinah (CDU).</div></a>
+        <a class="res" href="https://www.fes.de/studienfoerderung" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Friedrich-Ebert-Stiftung (FES)</span><div class="rd">Parteinah (SPD).</div></a>
+        <a class="res" href="https://www.freiheit.org/de/stipendien" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Friedrich-Naumann-Stiftung (FNS)</span><div class="rd">Parteinah (FDP), „für die Freiheit".</div></a>
+        <a class="res" href="https://www.cusanuswerk.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Cusanuswerk</span><div class="rd">Katholisches Begabtenförderungswerk.</div></a>
+        <a class="res" href="https://www.eles-studienwerk.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">ELES</span><div class="rd">Ernst-Ludwig-Ehrlich-Studienwerk (jüdisch).</div></a>
+        <a class="res" href="https://www.avicenna-studienwerk.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Avicenna-Studienwerk</span><div class="rd">Muslimisches Begabtenförderungswerk.</div></a>
+      </div>
+    </div>
+
+    <div class="rescat">
+      <h3>Ausland &amp; Bewerbung</h3>
+      <div class="reslist">
+        <a class="res" href="https://www.commonapp.org/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Common App</span><div class="rd">Zentrale Bewerbung für US-Unis.</div></a>
+        <a class="res" href="https://www.ucas.com/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">UCAS</span><div class="rd">Zentrale Bewerbung für UK-Unis. Frühe Fristen!</div></a>
+        <a class="res" href="https://erasmus-plus.ec.europa.eu/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Erasmus+</span><div class="rd">Nicht nur Semester — auch Praktika &amp; mehr.</div></a>
+        <a class="res" href="https://www.afs.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">AFS Interkulturelle Begegnungen</span><div class="rd">Schüleraustausch / Auslandsjahr.</div></a>
+        <a class="res" href="https://www.yfu.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">YFU Deutschland</span><div class="rd">Schüleraustausch / Auslandsjahr.</div></a>
+      </div>
+    </div>
+
+    <div class="rescat">
+      <h3>Schon in der Schule</h3>
+      <div class="reslist">
+        <a class="res" href="https://www.mint-ec.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">MINT-EC</span><div class="rd">Ihr seid schon Mitglied. Camps, Zertifikate, Netzwerk.</div></a>
+        <a class="res" href="https://www.daad.de/rise/de/rise-germany/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">DAAD RISE</span><div class="rd">Forschungspraktika für Studierende — früh merken.</div></a>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <span class="kicker">Hinweis zum Datenschutz:</span> Diese Seite zeigt bewusst <strong>keine Namen</strong>. Die Wege sind anonym aggregiert. Einzelne recherchierte Angaben können ungenau sein und wurden nicht abschließend verifiziert. Bei Fragen oder Korrekturen: einfach melden.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Heinrich-Hertz-Gymnasium Berlin</strong> — Absolvent:innentreffen · Vortrag „Auslandsstudium, Stipendien, Startup — die Karte, die niemand zeigt."</p>
+    <p>Diese Seite ist als Nachschlagewerk zum Vortrag gedacht. Alle Links öffnen offizielle Quellen.</p>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   KOMMILITON:INNEN-DATENSATZ (anonym aggregiert oben; Namen hier optional)
+
+   Standardmäßig werden KEINE Namen angezeigt. Wenn Einverständnis vorliegt,
+   kannst du unten SHOW_NAMES auf true setzen — dann ergänzt das Skript eine
+   Namensspalte. Verifiziert (v): eigene Angabe/bestätigt. Web (w): recherchiert,
+   NICHT abschließend geprüft.
+   ------------------------------------------------------------------------- */
+const SHOW_NAMES = false; // <- auf true setzen, wenn alle einverstanden sind
+
+const PEOPLE = [
+  {name:"Lidija Petrovic",  field:"Physik",        place:"Freiburg",        src:"v"},
+  {name:"Julian Felber",    field:"Medizin",       place:"Berlin (Charité)",src:"v/w"},
+  {name:"Jiri Lemberg",     field:"Medizin",       place:"Heidelberg",      src:"v"},
+  {name:"Philip Piefel",    field:"Informatik/IT", place:"Berlin (HTW)",    src:"v/w"},
+  {name:"Joshua Schicht",   field:"Informatik/IT", place:"Berlin (HTW)",    src:"v"},
+  {name:"Matilda Lu",       field:"Jura",          place:"Berlin (HU)",     src:"v"},
+  {name:"Bastian Reinhardt",field:"Bundeswehr",    place:"—",               src:"v"},
+  {name:"David Uptmoor",    field:"Physik",        place:"Berlin (HU)",     src:"w"},
+  {name:"Agnelo Pilgram",   field:"—",             place:"—",               src:"?"},
+  {name:"David Vasquez",    field:"—",             place:"—",               src:"?"},
+  {name:"Till Rehman",      field:"—",             place:"—",               src:"?"},
+  {name:"Annemarie Wagner", field:"—",             place:"—",               src:"?"},
+  {name:"Arlo Petereit",    field:"—",             place:"—",               src:"?"},
+  {name:"Clara Sandig",     field:"—",             place:"—",               src:"?"},
+  {name:"Daniel Fadeev",    field:"—",             place:"—",               src:"?"},
+  {name:"Domeneque Ihde",   field:"—",             place:"—",               src:"?"}
+];
+
+/* Feld-Karten aus PEOPLE aggregieren (nur bekannte Felder) */
+(function buildFieldGrid(){
+  const map = {};
+  PEOPLE.forEach(p=>{
+    if(p.field==="—") return;
+    map[p.field] = map[p.field] || {n:0, places:new Set()};
+    map[p.field].n++;
+    if(p.place!=="—") map[p.field].places.add(p.place);
+  });
+  const grid = document.getElementById('fieldGrid');
+  Object.entries(map).sort((a,b)=>b[1].n-a[1].n).forEach(([f,d])=>{
+    const el=document.createElement('div'); el.className='fcard';
+    el.innerHTML =
+      '<div class="b"><span class="name">'+f+'</span><span class="count">'+d.n+'</span></div>'+
+      '<div class="cities">'+([...d.places].join(' · ')||'—')+'</div>';
+    grid.appendChild(el);
+  });
+})();
+
+/* Optional: Namensspalte in die Tabelle einblenden */
+if(SHOW_NAMES){
+  const t = document.getElementById('uniTable');
+  // Kopfzeile
+  const th=document.createElement('th'); th.textContent='Personen (mit Einverständnis)';
+  t.tHead.rows[0].appendChild(th);
+  // Zeilen: pro sichtbarem Feld die Namen sammeln
+  const rows = t.tBodies[0].rows;
+  const byField = {};
+  PEOPLE.forEach(p=>{ if(p.field==="—")return; (byField[p.field]=byField[p.field]||[]).push(p.name); });
+  for(const r of rows){
+    const field = r.cells[0].innerText.trim();
+    const td=document.createElement('td'); td.className='note';
+    td.textContent = byField[field] ? byField[field].join(', ') : '—';
+    r.appendChild(td);
+  }
+}
+
+/* =========================================================================
+   ABSOLVENT:INNEN-VORTRÄGE (aus dem Vortragsplan) — Themen = reale Wege
+   ------------------------------------------------------------------------- */
+const PATHS = [
+  {topic:"Auslandsstudium, Stipendien, Startup — die Karte, die niemand zeigt", who:"Eduard Härtel", tag:"Wege"},
+  {topic:"Kernfusionsreaktoren", who:"Simon Giesel", tag:"Physik"},
+  {topic:"Wege ins Medizinstudium", who:"Narae Song", tag:"Medizin"},
+  {topic:"Berufsweg Psychologie", who:"Raphael Cuadros", tag:"Psychologie"},
+  {topic:"Dein Weg in die IT: Informatik-Jobs im KI-Zeitalter", who:"Prof. Dr.-Ing. Ina Schieferdecker", tag:"Informatik"},
+  {topic:"Fortschritte der Künstlichen Intelligenz", who:"Prof. Tim Rocktäschel", tag:"KI"},
+  {topic:"Von Turing bis ChatGPT — Geschichte der KI", who:"André Bergholz", tag:"KI"},
+  {topic:"Der Mythos Gründer — von langen Nächten und Milliarden Dollar", who:"Martin Möllmann", tag:"Startup"},
+  {topic:"Autonome Unterwasserfahrzeuge", who:"Philipp Bannasch", tag:"Robotik"},
+  {topic:"Das Stromnetz von Deutschland & Europa (50Hertz)", who:"Felix Fliegner", tag:"Energie"},
+  {topic:"Energiewende — Transformation der Energieinfrastruktur", who:"Henrik Töpelt", tag:"Energie"},
+  {topic:"Mathematik lässt sich nicht anwenden", who:"Dr. Holger Stephan", tag:"Mathematik"},
+  {topic:"Vom Mathenerd zum Arzt zum Kaufmann", who:"Dr. Helmar Wauer", tag:"Quereinstieg"},
+  {topic:"Kristalle in der Mineralogie", who:"Michael Frank", tag:"Geo"},
+  {topic:"Forschung in der Telekommunikation", who:"Dr. rer. nat. Martin Stahn", tag:"Forschung"},
+  {topic:"Wer und wo ist Kopernikus 2.0?", who:"Dr. Stefan Freundt", tag:"Astronomie"},
+  {topic:"Nachhaltiges Bauen", who:"Siegfried Schulz", tag:"Bauwesen"},
+  {topic:"Juristisches Studium — kleine Einführung", who:"Assman Ali Taufik", tag:"Jura"},
+  {topic:"Wirtschaftsinformatik & KI", who:"Prof. Dr.-Ing. Ulrich John", tag:"Wirtschaftsinf."},
+  {topic:"Monetäre Krisendynamik", who:"Samirah Kenawi", tag:"Ökonomie"},
+  {topic:"Mystik im Gesundheitswesen", who:"Dr. Stephan Dittrich", tag:"Gesundheit"},
+  {topic:"Arbeitswelt & Künstliche Intelligenz", who:"Max Schultze", tag:"Zukunft"},
+  {topic:"Trau dich groß zu träumen — Mut, Ausdauer, Teamgeist", who:"Alexander Seeger", tag:"Mindset"}
+];
+
+(function buildPaths(){
+  const grid=document.getElementById('pathsGrid');
+  PATHS.forEach(p=>{
+    const el=document.createElement('div'); el.className='path';
+    el.innerHTML =
+      '<p class="topic">'+p.topic+'</p>'+
+      '<p class="who">'+p.who+'</p>'+
+      '<span class="tag">'+p.tag+'</span>';
+    grid.appendChild(el);
+  });
+})();
+</script>
+</body>
+</html>
