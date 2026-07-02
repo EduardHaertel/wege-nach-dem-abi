@@ -459,6 +459,10 @@ function classifyHeader(h){
   const s=h.toLowerCase();
   if(["name","field","city","year","group","src","studyplace"].includes(s)) return s;
   if(s.includes("jahr")) return "year";
+  // "Was hast du ALLES gemacht" (Historie) & "Was HAUPTSÄCHLICH jetzt" (Kategorie):
+  // Kategorie als Fallback-Feld, Historie ignorieren.
+  if(s.includes("hauptsächlich")||s.includes("hauptsaechlich")) return "category";
+  if(s.includes("alles gemacht")||s.includes("seit dem abi")||s.includes("gemacht")) return null;
   // aktueller Ort hat eigene Kennung (Vorrang vor Studienort)
   if(s.includes("jetzt")||s.includes("arbeitest")||s.includes("lebst")) return "city";
   if(s.includes("ort")||s.includes("stadt")) return "studyplace";
@@ -480,12 +484,14 @@ function parseCSV(text){
   const head=rows.shift();
   const roles=head.map(classifyHeader);
   return rows.map(r=>{
-    const o={name:"",field:"",city:"",studyplace:"",country:"",year:"",group:"",src:"",consent:""};
+    const o={name:"",field:"",city:"",studyplace:"",country:"",year:"",group:"",src:"",consent:"",category:""};
     roles.forEach((role,i)=>{
       if(!role) return;
       const val=(r[i]||"").trim();
       if(val && !o[role]) o[role]=val; // erste nicht-leere gewinnt
     });
+    // Kein Fach angegeben (z.B. reiner Job-Weg)? -> Kategorie ("Arbeiten/Job" etc.) nutzen
+    if(!o.field && o.category) o.field=o.category;
     // Aktueller Ort (city) hat Vorrang; sonst Studienort
     let city = o.city || o.studyplace;
     if(o.country && !["","deutschland","germany"].includes(o.country.toLowerCase()))
