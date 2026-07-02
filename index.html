@@ -163,25 +163,10 @@
   </div>
 </section>
 
-<!-- ============ MITMACHEN / UMFRAGE ============ -->
-<section id="mitmachen">
-  <div class="wrap">
-    <h2><span class="num">02</span>Mach mit — trag deinen Weg ein</h2>
-    <p class="sub">Du bist Ehemalige:r? Zwei Minuten. Deine Angaben helfen den jüngeren Jahrgängen, echte Wege zu sehen statt Broschüren. Alles freiwillig, Kontaktdaten nur wenn du willst.</p>
-    <div class="surveybox">
-      <div class="surveytext">
-        <p style="margin:0 0 8px"><strong>Abgefragt wird:</strong> Abi-Jahrgang · Studienfach/Ausbildung · Stadt/Land · aktueller Job (optional) · ob dein Weg anonym gezeigt werden darf · Kontakt (optional).</p>
-        <p class="note" style="margin:0">Auswertung anonymisiert. Kontaktdaten werden nicht öffentlich gezeigt. Details im Formular.</p>
-      </div>
-      <a class="btn primary big" id="surveyBtn" href="https://forms.gle/cQCErCnET6DNCRy98" target="_blank" rel="noopener">Zur Umfrage →</a>
-    </div>
-  </div>
-</section>
-
 <!-- ============ RESSOURCEN ============ -->
 <section id="ressourcen">
   <div class="wrap">
-    <h2><span class="num">03</span>Die Ressourcen</h2>
+    <h2><span class="num">02</span>Die Ressourcen</h2>
     <p class="sub">Keine endlose Liste — nur die, die wirklich zählen. Alle klickbar, alle offiziell. <strong>Das hier ist der Grund für den QR-Code.</strong></p>
 
     <div class="rescat">
@@ -485,15 +470,6 @@ if(CSV_URL){
     .catch(e=>console.warn("Umfrage-Daten nicht geladen, nutze Fallback:",e.message));
 }
 
-/* Umfrage-Button: solange kein echter Link gesetzt ist, freundlich abfangen */
-(function(){
-  const btn=document.getElementById('surveyBtn');
-  if(btn && btn.getAttribute('href')==='SURVEY_URL_HIER_EINSETZEN'){
-    btn.textContent='Umfrage kommt in Kürze';
-    btn.style.opacity='.6'; btn.style.cursor='default';
-    btn.addEventListener('click',e=>{e.preventDefault();alert('Die Umfrage wird gerade eingerichtet — schau bald wieder vorbei!');});
-  }
-})();
 </script>
 </body>
 </html>
