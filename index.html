@@ -34,6 +34,9 @@
   h1{font-size:clamp(2rem,5.2vw,3.1rem);line-height:1.1;margin:0 0 16px;font-weight:800;letter-spacing:-.025em;color:#15212c}
   h1 .thin{color:var(--muted);font-weight:500}
   .lede{font-size:clamp(1.03rem,2.2vw,1.24rem);color:var(--muted);max-width:60ch;margin:0 0 26px}
+  .keywords{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+  .keywords span{display:inline-block;padding:10px 20px;border-radius:999px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);font-weight:700;font-size:clamp(1rem,2.4vw,1.2rem);color:var(--petrol-d);letter-spacing:-.01em}
+  .keywords span:nth-child(2){color:var(--green)}
   .cta-row{display:flex;flex-wrap:wrap;gap:12px}
   .btn{display:inline-block;padding:12px 20px;border-radius:12px;font-weight:600;font-size:.96rem;border:1px solid var(--line);background:var(--panel);color:var(--ink);box-shadow:var(--shadow);transition:transform .12s ease,box-shadow .12s ease}
   .btn.primary{background:var(--petrol);color:#fff;border-color:transparent}
@@ -122,7 +125,11 @@
   <div class="wrap">
     <p class="eyebrow">Heinrich-Hertz-Gymnasium Berlin</p>
     <h1>Die Karte, die niemand zeigt.<br><span class="thin">Wohin Hertzis nach dem Abi wirklich gehen.</span></h1>
-    <p class="lede">Keine Broschüre — echte Wege echter Absolvent:innen unserer Schule, gebündelt nach Stadt und Fach. Plus die Ressourcen, die den Unterschied machen. Der Sinn dieser Seite: dass ihr die Links habt, wenn ihr sie braucht.</p>
+    <div class="keywords">
+      <span>Auslandsstudium</span>
+      <span>Stipendien</span>
+      <span>Startup</span>
+    </div>
   </div>
 </header>
 
@@ -269,8 +276,8 @@ const FALLBACK_PEOPLE = [
   {name:"Joshua Schicht",    field:"Informatik/IT",    city:"Berlin",           year:2021, group:"2021", src:"v"},
   {name:"Yorick Zeschke",    field:"Informatik/IT",    city:"Amsterdam→London", year:2021, group:"2021", src:"w"},
   {name:"Matilda Lu",        field:"Jura",             city:"Berlin",           year:2021, group:"2021", src:"v"},
-  {name:"Anand Chuluunkhuu", field:"Ingenieur/Chemie", city:"Berlin",           year:2021, group:"2021", src:"v/w"},
-  {name:"Möne Arndt",        field:"Ingenieur/Chemie", city:"Berlin",           year:2021, group:"2021", src:"v"},
+  {name:"Anand Chuluunkhuu", field:"Ingenieurwesen",   city:"Berlin",           year:2021, group:"2021", src:"v/w"},
+  {name:"Möne Arndt",        field:"Ingenieurwesen",   city:"Berlin",           year:2021, group:"2021", src:"v"},
   {name:"Paul Siewert",      field:"Mathematik",       city:"Cambridge",        year:2021, group:"2021", src:"v/w"},
   {name:"Bastian Reinhardt", field:"Bundeswehr",       city:"",                 year:2021, group:"2021", src:"v"},
   // ---- Jahrgang 2021, Weg noch in Klärung ----
@@ -281,17 +288,17 @@ const FALLBACK_PEOPLE = [
      "Ali Ahmed Amroune","Thuy Lai","Minh Ngo","Arthur Gerhardt","Timon Arnold","Adrian Bufe","Philip Datchev"]
      .map(n=>({name:n,field:"",city:"",year:2021,group:"2021",src:"?"})),
   // ---- Vortragende aus dem Vortragsplan (Ehemalige, weitere Jahrgänge) ----
-  {name:"Simon Giesel",     field:"Physik (Kernfusion)",     city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Narae Song",       field:"Medizin",                 city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Raphael Cuadros",  field:"Psychologie",             city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Philipp Bannasch", field:"Robotik",                 city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Felix Fliegner",   field:"Energie/Ingenieurwesen",  city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Henrik Töpelt",    field:"Energie/Ingenieurwesen",  city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Martin Möllmann",  field:"Startup/Gründung",        city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Michael Frank",    field:"Geowissenschaften",       city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Carsten Eckert",   field:"Logistik/Ingenieurwesen", city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Siegfried Schulz", field:"Bauwesen",                city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Jonas Wanke",      field:"Informatik/IT",           city:"", year:null, group:"vortragende", src:"plan"}
+  {name:"Simon Giesel",     field:"Physik",           city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Narae Song",       field:"Medizin",          city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Raphael Cuadros",  field:"Psychologie",      city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Philipp Bannasch", field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Felix Fliegner",   field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Henrik Töpelt",    field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Carsten Eckert",   field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Siegfried Schulz", field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Martin Möllmann",  field:"Startup/Gründung", city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Michael Frank",    field:"Geowissenschaften",city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Jonas Wanke",      field:"Informatik/IT",    city:"", year:null, group:"vortragende", src:"plan"}
 ];
 
 /* Aktive Daten — starten mit Fallback, werden ggf. durch CSV ersetzt. */
@@ -422,8 +429,8 @@ const FIELD_ALIASES = {
   "Medizin":["medizin","humanmedizin","medicine","med"],
   "Mathematik":["mathematik","mathe","maths","math","mathematics"],
   "Jura":["jura","rechtswissenschaft","recht","law","rechtswissenschaften"],
-  "Ingenieur/Chemie":["chemie","chemistry","verfahrenstechnik","chemieingenieurwesen","chemical engineering"],
-  "Maschinenbau":["maschinenbau","mechanical engineering","mechanical"],
+  "Ingenieurwesen":["ingenieurwesen","ingenieur","engineering","maschinenbau","mechanical engineering","mechanical","chemieingenieurwesen","chemical engineering","verfahrenstechnik","robotik","robotics","elektrotechnik","electrical engineering","bauwesen","bauingenieurwesen","civil engineering","energietechnik","luft- und raumfahrt","aerospace"],
+  "Chemie":["chemie","chemistry"],
   "BWL/Wirtschaft":["bwl","betriebswirtschaft","wirtschaft","business","management","vwl","volkswirtschaft","economics","business administration"],
   "Psychologie":["psychologie","psychology"],
   "Biologie":["biologie","biology","bio"],
