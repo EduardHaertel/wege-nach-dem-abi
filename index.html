@@ -53,9 +53,14 @@
 
   /* FILTER BAR */
   .filterbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 20px}
-  .toggle{display:inline-flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer;font-size:.92rem;font-weight:600;color:var(--ink);box-shadow:var(--shadow);user-select:none}
+  .segmented{display:inline-flex;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:var(--shadow)}
+  .seg{border:none;background:transparent;padding:8px 18px;border-radius:999px;font-size:.9rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s}
+  .seg.active{background:var(--petrol);color:#fff;box-shadow:0 2px 8px rgba(47,125,143,.3)}
+  .seg:not(.active):hover{color:var(--ink)}
+  .toggle{display:inline-flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer;font-size:.92rem;font-weight:600;color:var(--ink);box-shadow:var(--shadow);user-select:none;transition:opacity .15s}
   .toggle input{width:16px;height:16px;accent-color:var(--petrol);cursor:pointer}
   .toggle:hover{border-color:var(--petrol)}
+  .toggle.disabled{opacity:.4;pointer-events:none}
   .filternote{color:var(--soft);font-size:.85rem}
 
   /* STAT ROW */
@@ -140,7 +145,11 @@
     <p class="sub">Abitur-Jahrgang <strong>2021</strong>, anonym ausgewertet. nach <strong>Fach</strong> und <strong>Stadt</strong> sortiert. </p>
 
     <div class="filterbar">
-      <label class="toggle"><input type="checkbox" id="tglVortragende"> <span>Vortragende (weitere Jahrgänge) mitzählen</span></label>
+      <div class="segmented" id="sourceSwitch" role="tablist" aria-label="Datenquelle">
+        <button class="seg active" data-src="fallback" role="tab" aria-selected="true">Recherchiert</button>
+        <button class="seg" data-src="survey" role="tab" aria-selected="false">Aus Umfrage</button>
+      </div>
+      <label class="toggle" id="tglVortragendeWrap"><input type="checkbox" id="tglVortragende"> <span>Vortragende mitzählen</span></label>
       <span class="filternote" id="filterNote"></span>
     </div>
 
@@ -299,12 +308,19 @@ const FALLBACK_PEOPLE = [
   {name:"Jonas Wanke",      field:"Informatik/IT",    city:"", year:null, group:"vortragende", src:"plan"}
 ];
 
-/* Aktive Daten — starten mit Fallback, werden ggf. durch CSV ersetzt. */
-let PEOPLE = FALLBACK_PEOPLE.slice();
+/* Zwei getrennte Quellen — nie gemischt, damit keine Doppelzählung entsteht. */
+let SURVEY = [];                 // wird vom CSV-Loader gefüllt
+let CURRENT_SOURCE = "fallback"; // "fallback" | "survey"
+let SHOW_VORTRAGENDE = false;
 
-/* ---- Render-Pipeline (filterbar) ---- */
-function render(includeVortragende){
-  const pool = PEOPLE.filter(p => includeVortragende ? true : p.group==="2021");
+/* ---- Render-Pipeline ---- */
+function render(){
+  let pool;
+  if(CURRENT_SOURCE==="survey"){
+    pool = SURVEY.slice();                       // nur Umfrage-Antworten
+  }else{
+    pool = FALLBACK_PEOPLE.filter(p => SHOW_VORTRAGENDE ? true : p.group==="2021");
+  }
   const known = pool.filter(p=>p.field);
   const unknownCount = pool.length - known.length;
 
@@ -379,16 +395,33 @@ function render(includeVortragende){
   });
 
   /* Hinweis-Text */
-  const nV = PEOPLE.filter(p=>p.group==="vortragende").length;
-  document.getElementById('filterNote').textContent =
-    includeVortragende
-      ? nV+" Vortragende aus weiteren Jahrgängen sind mitgezählt."
-      : "";
+  const note=document.getElementById('filterNote');
+  if(CURRENT_SOURCE==="survey"){
+    note.textContent = SURVEY.length
+      ? SURVEY.length+" Antworten aus der Umfrage."
+      : "Noch keine Umfrage-Antworten — schau später wieder rein.";
+  }else{
+    const nV = FALLBACK_PEOPLE.filter(p=>p.group==="vortragende").length;
+    note.textContent = SHOW_VORTRAGENDE ? nV+" Vortragende weiterer Jahrgänge mitgezählt." : "";
+  }
 }
 
+/* ---- Steuerung: Quellen-Switch + Vortragenden-Toggle ---- */
 const tgl=document.getElementById('tglVortragende');
-tgl.addEventListener('change',()=>render(tgl.checked));
-render(false); // erst Fallback rendern (Seite ist sofort da)
+const tglWrap=document.getElementById('tglVortragendeWrap');
+tgl.addEventListener('change',()=>{ SHOW_VORTRAGENDE=tgl.checked; render(); });
+
+const segs=document.querySelectorAll('#sourceSwitch .seg');
+function setSource(src){
+  CURRENT_SOURCE=src;
+  segs.forEach(b=>{const on=b.dataset.src===src;b.classList.toggle('active',on);b.setAttribute('aria-selected',on);});
+  // Vortragenden-Toggle nur bei "Recherchiert" sinnvoll
+  tglWrap.classList.toggle('disabled', src!=="fallback");
+  render();
+}
+segs.forEach(b=>b.addEventListener('click',()=>setSource(b.dataset.src)));
+
+render(); // Standard: Recherchiert (Seite sofort da)
 
 /* ---- CSV-Parser (robust: Anführungszeichen, Kommas, Zeilenumbrüche) ---- */
 function parseCSVRaw(text){
@@ -505,20 +538,17 @@ function parseCSV(text){
   });
 }
 
-/* ---- Live-Daten aus veröffentlichtem Google Sheet laden (optional) ---- */
+/* ---- Live-Daten aus veröffentlichtem Google Sheet laden ---- */
 if(CSV_URL){
   fetch(CSV_URL,{cache:"no-store"})
     .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
     .then(txt=>{
-      const survey=parseCSV(txt).filter(p=>p.field||p.city); // nur mit Inhalt
-      if(survey.length){
-        // Umfrage ERGÄNZT den recherchierten Bestand (ersetzt ihn nicht)
-        PEOPLE = FALLBACK_PEOPLE.concat(survey);
-        render(tgl.checked);
-        console.log("Umfrage-Daten ergänzt:",survey.length,"Einträge");
-      }
+      // In SURVEY ablegen (getrennt vom Fallback -> keine Doppelzählung).
+      SURVEY = parseCSV(txt).filter(p=>p.field||p.city);
+      if(CURRENT_SOURCE==="survey") render(); // aktualisieren, falls Umfrage-Ansicht aktiv
+      console.log("Umfrage-Antworten geladen:",SURVEY.length);
     })
-    .catch(e=>console.warn("Umfrage-Daten nicht geladen, nutze Fallback:",e.message));
+    .catch(e=>console.warn("Umfrage-Daten nicht geladen:",e.message));
 }
 
 </script>
