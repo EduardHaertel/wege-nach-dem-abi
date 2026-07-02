@@ -48,6 +48,13 @@
   h2 .num{color:var(--green);font-size:.68em;font-weight:800;margin-right:.5rem;vertical-align:.14em}
   .sub{color:var(--muted);margin:0 0 26px;max-width:66ch}
 
+  /* FILTER BAR */
+  .filterbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 20px}
+  .toggle{display:inline-flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer;font-size:.92rem;font-weight:600;color:var(--ink);box-shadow:var(--shadow);user-select:none}
+  .toggle input{width:16px;height:16px;accent-color:var(--petrol);cursor:pointer}
+  .toggle:hover{border-color:var(--petrol)}
+  .filternote{color:var(--soft);font-size:.85rem}
+
   /* STAT ROW */
   .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:6px 0 4px}
   .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
@@ -96,6 +103,14 @@
   .callout{background:linear-gradient(180deg,#f0f8f4,#ffffff);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:14px;padding:16px 20px;margin:16px 0 0;color:var(--ink);font-size:.94rem;box-shadow:var(--shadow)}
   .callout strong{color:var(--petrol-d)}
 
+  /* GROW + SURVEY */
+  .growbox{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(180deg,#eef6f8,#ffffff);border:1px solid var(--line);border-left:4px solid var(--petrol);border-radius:14px;padding:16px 20px;margin:22px 0 0;box-shadow:var(--shadow)}
+  .growbox .growicon{font-size:1.4rem;line-height:1.3;flex:none}
+  .growbox strong{color:var(--petrol-d)}
+  .surveybox{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
+  .surveytext{flex:1;min-width:240px}
+  .btn.big{padding:15px 26px;font-size:1.05rem;white-space:nowrap}
+
   footer{padding:42px 0 64px;color:var(--muted);font-size:.9rem}
   .disclaimer{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px;color:var(--muted);font-size:.86rem;margin-top:20px;box-shadow:var(--shadow)}
   .kicker{color:var(--petrol-d);font-weight:700}
@@ -108,11 +123,6 @@
     <p class="eyebrow">Heinrich-Hertz-Gymnasium Berlin</p>
     <h1>Die Karte, die niemand zeigt.<br><span class="thin">Wohin man nach dem Abi wirklich geht.</span></h1>
     <p class="lede">Keine Broschüre — echte Wege echter Absolvent:innen unserer Schule, gebündelt nach Stadt und Fach. Plus die Ressourcen, die den Unterschied machen. Der Sinn dieser Seite: dass ihr die Links habt, wenn ihr sie braucht.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="#ressourcen">Direkt zu den Links</a>
-      <a class="btn" href="#wege">Wohin gehen die Leute?</a>
-    </div>
-    <div class="hook"><span class="dot"></span><span>Auch <b>Peter Scholze</b> (Fields-Medaille 2018, „Mathe-Nobelpreis") saß auf diesen Bänken. Es fängt hier an.</span></div>
   </div>
 </header>
 
@@ -120,7 +130,12 @@
 <section id="wege">
   <div class="wrap">
     <h2><span class="num">01</span>Wohin gehen die Leute?</h2>
-    <p class="sub">Ein aktueller Jahrgang, anonym ausgewertet. Namen bleiben weg — es geht um die <em>Richtungen</em>. Zwei Blickwinkel: nach <strong>Fach</strong> und nach <strong>Stadt</strong>. So sieht man, wie breit die Wege wirklich streuen — und dass „irgendwas mit Berlin" längst nicht alles ist.</p>
+    <p class="sub">Abitur-Jahrgang <strong>2021</strong>, anonym ausgewertet. Namen bleiben weg — es geht um die <em>Richtungen</em>. Zwei Blickwinkel: nach <strong>Fach</strong> und nach <strong>Stadt</strong>. So sieht man, wie breit die Wege wirklich streuen — und dass „irgendwas mit Berlin" längst nicht alles ist.</p>
+
+    <div class="filterbar">
+      <label class="toggle"><input type="checkbox" id="tglVortragende"> <span>Vortragende (weitere Jahrgänge) mitzählen</span></label>
+      <span class="filternote" id="filterNote"></span>
+    </div>
 
     <div class="stats" id="statRow"></div>
 
@@ -137,14 +152,36 @@
     <h3 style="margin:30px 0 10px;font-size:1.1rem;color:#15212c">Nach Stadt — wer bleibt, wer geht</h3>
     <div class="bundle" id="cityBundle"></div>
 
-    <p class="note" style="margin-top:14px">Basis: ein aktueller Jahrgang. Einzelne Angaben stammen aus öffentlich Auffindbarem und sind <span class="flag">nicht abschließend verifiziert</span>. Wo noch nichts feststeht: „in Klärung". Die Auswertung wächst, je mehr Wege bekannt sind.</p>
+    <p class="note" style="margin-top:14px">Basis: Abi-Jahrgang 2021, plus zuschaltbare Vortragende weiterer Jahrgänge. Einzelne Angaben stammen aus öffentlich Auffindbarem und sind <span class="flag">nicht abschließend verifiziert</span>. Wo noch nichts feststeht: „in Klärung".</p>
+
+    <div class="growbox">
+      <span class="growicon">📈</span>
+      <div>
+        <strong>Diese Karte wächst jedes Jahr.</strong> Bei jedem Absolvent:innentreffen kommen neue Wege dazu — je mehr Ehemalige ihren Weg teilen, desto ehrlicher und breiter wird das Bild. Was ihr hier seht, ist erst der Anfang.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MITMACHEN / UMFRAGE ============ -->
+<section id="mitmachen">
+  <div class="wrap">
+    <h2><span class="num">02</span>Mach mit — trag deinen Weg ein</h2>
+    <p class="sub">Du bist Ehemalige:r? Zwei Minuten. Deine Angaben helfen den jüngeren Jahrgängen, echte Wege zu sehen statt Broschüren. Alles freiwillig, Kontaktdaten nur wenn du willst.</p>
+    <div class="surveybox">
+      <div class="surveytext">
+        <p style="margin:0 0 8px"><strong>Abgefragt wird:</strong> Abi-Jahrgang · Studienfach/Ausbildung · Stadt/Land · aktueller Job (optional) · ob dein Weg anonym gezeigt werden darf · Kontakt (optional).</p>
+        <p class="note" style="margin:0">Auswertung anonymisiert. Kontaktdaten werden nicht öffentlich gezeigt. Details im Formular.</p>
+      </div>
+      <a class="btn primary big" id="surveyBtn" href="SURVEY_URL_HIER_EINSETZEN" target="_blank" rel="noopener">Zur Umfrage →</a>
+    </div>
   </div>
 </section>
 
 <!-- ============ RESSOURCEN ============ -->
 <section id="ressourcen">
   <div class="wrap">
-    <h2><span class="num">02</span>Die Ressourcen</h2>
+    <h2><span class="num">03</span>Die Ressourcen</h2>
     <p class="sub">Keine endlose Liste — nur die, die wirklich zählen. Alle klickbar, alle offiziell. <strong>Das hier ist der Grund für den QR-Code.</strong></p>
 
     <div class="rescat">
@@ -179,6 +216,7 @@
       <div class="reslist">
         <a class="res" href="https://www.commonapp.org/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Common App</span><div class="rd">Zentrale Bewerbung für US-Unis.</div></a>
         <a class="res" href="https://www.ucas.com/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">UCAS</span><div class="rd">Zentrale Bewerbung für UK-Unis. Frühe Fristen!</div></a>
+        <a class="res" href="https://www.ouac.on.ca/planning/i-am-an-international-applicant/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">OUAC (Kanada / Ontario)</span><div class="rd">Zentrale Bewerbung für Unis in Ontario — für internationale Bewerber:innen.</div></a>
         <a class="res" href="https://erasmus-plus.ec.europa.eu/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Erasmus+</span><div class="rd">Nicht nur Semester — auch Praktika.</div></a>
         <a class="res" href="https://www.daad.de/rise/de/rise-germany/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">DAAD RISE</span><div class="rd">Forschungspraktika — früh merken.</div></a>
         <a class="res" href="https://www.afs.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">AFS</span><div class="rd">Schüleraustausch / Auslandsjahr.</div></a>
@@ -209,86 +247,109 @@
 
 <script>
 /* =========================================================================
-   AKTUELLER JAHRGANG — anonym aggregiert.
-   Standard: KEINE Namen sichtbar. SHOW_NAMES=true blendet (mit Einverständnis)
-   Namen in der Fach-Tabelle ein.
-   src: v=eigene Angabe/bestätigt, w=web (ungeprüft), ?=unbekannt.
+   DATEN
+   -------------------------------------------------------------------------
+   Automatik: Die Seite lädt bei jedem Aufruf die Umfrage-Ergebnisse direkt aus
+   einem als CSV veröffentlichten Google Sheet (CSV_URL). Neue Antworten
+   erscheinen dann automatisch — du musst nichts mehr am Code ändern.
+
+   >>> EINMALIGES SETUP (dann nie wieder anfassen):
+   1. Google-Form-Antworten liegen in einem Google Sheet.
+   2. Im Sheet ein Tabellenblatt mit GENAU diesen Spalten in Zeile 1 anlegen:
+        name,field,city,year,group,src
+      (Tipp: nur anonyme Spalten! 'name' darf leer bleiben. field=Fach,
+       city=Stadt, year=Abijahr, group="2021" o.ä. Jahrgang, src=Quelle.)
+   3. Datei → Freigeben → "Im Web veröffentlichen" → dieses Blatt → Format CSV.
+   4. Die erzeugte URL unten bei CSV_URL eintragen.
+   Solange CSV_URL leer ist ODER der Abruf fehlschlägt, nutzt die Seite die
+   unten eingebauten FALLBACK-Daten — sie ist also nie leer.
+
+   group: "2021" = Abi-Jahrgang 2021 · "vortragende" = Ehemalige aus dem
+   Vortragsplan. field/city leer = noch in Klärung.
+   src: v=eigene Angabe/bestätigt, w=web (ungeprüft), plan=Vortragsplan,
+        umfrage=aus Formular, ?=offen.
    ------------------------------------------------------------------------- */
 const SHOW_NAMES = false;
+const CSV_URL = ""; // <- hier die veröffentlichte Google-Sheet-CSV-URL eintragen
 
-const PEOPLE = [
-  {name:"Lidija Petrovic",       field:"Physik",        city:"Freiburg",   src:"v"},
-  {name:"Tamino Wettengel",      field:"Physik",        city:"Berlin",     src:"v/w"},
-  {name:"David Uptmoor",         field:"Physik",        city:"Berlin",     src:"w"},
-  {name:"Julian Felber",         field:"Medizin",       city:"Berlin",     src:"v/w"},
-  {name:"Jiri Lemberg",          field:"Medizin",       city:"Heidelberg", src:"v"},
-  {name:"Philip Piefel",         field:"Informatik/IT", city:"Berlin",     src:"v/w"},
-  {name:"Joshua Schicht",        field:"Informatik/IT", city:"Berlin",     src:"v"},
-  {name:"Matilda Lu",            field:"Jura",          city:"Berlin",     src:"v"},
-  {name:"Anand Chuluunkhuu",     field:"Ingenieur/Chemie", city:"Berlin",  src:"v/w"},
-  {name:"Möne Arndt",            field:"Ingenieur/Chemie", city:"Berlin",  src:"v"},
-  {name:"Paul Siewert",          field:"Mathematik",    city:"Cambridge",  src:"v/w"},
-  {name:"Yorick Zeschke",        field:"Informatik/IT", city:"Amsterdam→London",  src:"w"},
-  {name:"Bastian Reinhardt",     field:"Bundeswehr",    city:"—",          src:"v"},
-  // — noch offen / in Klärung —
-  {name:"Agnelo Pilgram",field:"—",city:"—",src:"?"},{name:"David Vasquez",field:"—",city:"—",src:"?"},
-  {name:"Till Rehman",field:"—",city:"—",src:"?"},{name:"Annemarie Wagner",field:"—",city:"—",src:"?"},
-  {name:"Arlo Petereit",field:"—",city:"—",src:"?"},{name:"Clara Sandig",field:"—",city:"—",src:"?"},
-  {name:"Daniel Fadeev",field:"—",city:"—",src:"?"},{name:"Domeneque Ihde",field:"—",city:"—",src:"?"},
-  {name:"Elena Hapka",field:"—",city:"—",src:"?"},{name:"Henrike Witt",field:"—",city:"—",src:"?"},
-  {name:"Henrike Marzahn",field:"—",city:"—",src:"?"},{name:"Karl-Friedrich Guddat",field:"—",city:"—",src:"?"},
-  {name:"Huy Phan Dong",field:"—",city:"—",src:"?"},{name:"Lilly Purtz",field:"—",city:"—",src:"?"},
-  {name:"Lukas Schwager",field:"—",city:"—",src:"?"},{name:"Ole Karge",field:"—",city:"—",src:"?"},
-  {name:"Sheng D.",field:"—",city:"—",src:"?"},{name:"Timon Arndt",field:"—",city:"—",src:"?"},
-  {name:"Tom Romeo Doil",field:"—",city:"—",src:"?"},{name:"Chioma Tischendorf",field:"—",city:"—",src:"?"},
-  {name:"Max Reinhardt",field:"—",city:"—",src:"?"},{name:"Richard Otto Winne",field:"—",city:"—",src:"?"},
-  {name:"Richard Otto Wille",field:"—",city:"—",src:"?"},
-  {name:"Quynh Anh",field:"—",city:"—",src:"?"},{name:"Ali Ahmed Amroune",field:"—",city:"—",src:"?"},
-  {name:"Thuy Lai",field:"—",city:"—",src:"?"},{name:"Minh Ngo",field:"—",city:"—",src:"?"},
-  {name:"Arthur Gerhardt",field:"—",city:"—",src:"?"},{name:"Timon Arnold",field:"—",city:"—",src:"?"},
-  {name:"Adrian Bufe",field:"—",city:"—",src:"?"},{name:"Philip Datchev",field:"—",city:"—",src:"?"}
+const FALLBACK_PEOPLE = [
+  // ---- Abi-Jahrgang 2021 ----
+  {name:"Eduard Härtel",     field:"Physik",           city:"Toronto",          year:2021, group:"2021", src:"v"},
+  {name:"Lidija Petrovic",   field:"Physik",           city:"Freiburg",         year:2021, group:"2021", src:"v"},
+  {name:"Tamino Wettengel",  field:"Physik",           city:"Berlin",           year:2021, group:"2021", src:"v/w"},
+  {name:"David Uptmoor",     field:"Physik",           city:"Berlin",           year:2021, group:"2021", src:"w"},
+  {name:"Julian Felber",     field:"Medizin",          city:"Berlin",           year:2021, group:"2021", src:"v/w"},
+  {name:"Jiri Lemberg",      field:"Medizin",          city:"Heidelberg",       year:2021, group:"2021", src:"v"},
+  {name:"Philip Piefel",     field:"Informatik/IT",    city:"Berlin",           year:2021, group:"2021", src:"v/w"},
+  {name:"Joshua Schicht",    field:"Informatik/IT",    city:"Berlin",           year:2021, group:"2021", src:"v"},
+  {name:"Yorick Zeschke",    field:"Informatik/IT",    city:"Amsterdam→London", year:2021, group:"2021", src:"w"},
+  {name:"Matilda Lu",        field:"Jura",             city:"Berlin",           year:2021, group:"2021", src:"v"},
+  {name:"Anand Chuluunkhuu", field:"Ingenieur/Chemie", city:"Berlin",           year:2021, group:"2021", src:"v/w"},
+  {name:"Möne Arndt",        field:"Ingenieur/Chemie", city:"Berlin",           year:2021, group:"2021", src:"v"},
+  {name:"Paul Siewert",      field:"Mathematik",       city:"Cambridge",        year:2021, group:"2021", src:"v/w"},
+  {name:"Bastian Reinhardt", field:"Bundeswehr",       city:"",                 year:2021, group:"2021", src:"v"},
+  // ---- Jahrgang 2021, Weg noch in Klärung ----
+  ...["Agnelo Pilgram","David Vasquez","Till Rehman","Annemarie Wagner","Arlo Petereit","Clara Sandig",
+     "Daniel Fadeev","Domeneque Ihde","Elena Hapka","Henrike Witt","Henrike Marzahn","Karl-Friedrich Guddat",
+     "Huy Phan Dong","Lilly Purtz","Lukas Schwager","Ole Karge","Sheng D.","Timon Arndt","Tom Romeo Doil",
+     "Chioma Tischendorf","Max Reinhardt","Richard Otto Winne","Richard Otto Wille","Quynh Anh",
+     "Ali Ahmed Amroune","Thuy Lai","Minh Ngo","Arthur Gerhardt","Timon Arnold","Adrian Bufe","Philip Datchev"]
+     .map(n=>({name:n,field:"",city:"",year:2021,group:"2021",src:"?"})),
+  // ---- Vortragende aus dem Vortragsplan (Ehemalige, weitere Jahrgänge) ----
+  {name:"Simon Giesel",     field:"Physik (Kernfusion)",     city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Narae Song",       field:"Medizin",                 city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Raphael Cuadros",  field:"Psychologie",             city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Philipp Bannasch", field:"Robotik",                 city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Felix Fliegner",   field:"Energie/Ingenieurwesen",  city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Henrik Töpelt",    field:"Energie/Ingenieurwesen",  city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Martin Möllmann",  field:"Startup/Gründung",        city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Michael Frank",    field:"Geowissenschaften",       city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Carsten Eckert",   field:"Logistik/Ingenieurwesen", city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Siegfried Schulz", field:"Bauwesen",                city:"", year:null, group:"vortragende", src:"plan"},
+  {name:"Jonas Wanke",      field:"Informatik/IT",           city:"", year:null, group:"vortragende", src:"plan"}
 ];
 
-const known = PEOPLE.filter(p=>p.field!=="—");
-const unknownCount = PEOPLE.length - known.length;
+/* Aktive Daten — starten mit Fallback, werden ggf. durch CSV ersetzt. */
+let PEOPLE = FALLBACK_PEOPLE.slice();
 
-/* ---- STAT ROW ---- */
-(function stats(){
-  const cities = new Set(known.filter(p=>p.city!=="—").map(p=>p.city));
+/* ---- Render-Pipeline (filterbar) ---- */
+function render(includeVortragende){
+  const pool = PEOPLE.filter(p => includeVortragende ? true : p.group==="2021");
+  const known = pool.filter(p=>p.field);
+  const unknownCount = pool.length - known.length;
+
+  /* STATS */
+  const cities = new Set(known.filter(p=>p.city).map(p=>p.city));
   const fields = new Set(known.map(p=>p.field));
   const inBerlin = known.filter(p=>p.city==="Berlin").length;
-  const outside = known.filter(p=>p.city!=="Berlin" && p.city!=="—").length;
-  const data=[
-    [PEOPLE.length,"Absolvent:innen erfasst"],
+  const outside  = known.filter(p=>p.city && p.city!=="Berlin").length;
+  const statData=[
+    [pool.length,"Personen erfasst"],
     [fields.size,"verschiedene Fächer"],
     [cities.size,"Studienorte"],
-    [inBerlin+"/"+(inBerlin+outside),"bleiben in Berlin"]
+    [(inBerlin+outside)>0 ? inBerlin+"/"+(inBerlin+outside) : "–","bleiben in Berlin"]
   ];
-  const row=document.getElementById('statRow');
-  data.forEach(([b,l])=>{
+  const row=document.getElementById('statRow'); row.innerHTML="";
+  statData.forEach(([b,l])=>{
     const el=document.createElement('div');el.className='stat';
     el.innerHTML='<div class="big">'+b+'</div><div class="lbl">'+l+'</div>';
     row.appendChild(el);
   });
-})();
 
-/* ---- FACH-TABELLE mit Balken ---- */
-(function fields(){
-  const map={};
+  /* FACH-TABELLE */
+  const fmap={};
   known.forEach(p=>{
-    map[p.field]=map[p.field]||{n:0,cities:new Set()};
-    map[p.field].n++;
-    if(p.city!=="—") map[p.field].cities.add(p.city);
+    fmap[p.field]=fmap[p.field]||{n:0,cities:new Set()};
+    fmap[p.field].n++; if(p.city) fmap[p.field].cities.add(p.city);
   });
-  const rows=Object.entries(map).sort((a,b)=>b[1].n-a[1].n);
-  const max=Math.max(...rows.map(r=>r[1].n),1);
-  const body=document.getElementById('uniBody');
-  rows.forEach(([f,d])=>{
-    const pct=Math.round(d[1]?d.n/max*100:0)||Math.round(d.n/max*100);
+  const frows=Object.entries(fmap).sort((a,b)=>b[1].n-a[1].n);
+  const max=Math.max(...frows.map(r=>r[1].n),1);
+  const body=document.getElementById('uniBody'); body.innerHTML="";
+  frows.forEach(([f,d])=>{
     const tr=document.createElement('tr');
     tr.innerHTML=
       '<td><span class="field">'+f+'</span></td>'+
-      '<td class="place">'+[...d.cities].join(' · ')+'</td>'+
+      '<td class="place">'+([...d.cities].join(' · ')||'—')+'</td>'+
       '<td class="barcell"><div class="bar"><div class="track"><div class="fill" style="width:'+Math.round(d.n/max*100)+'%"></div></div><span class="cnt">'+d.n+'</span></div></td>';
     body.appendChild(tr);
   });
@@ -303,37 +364,98 @@ const unknownCount = PEOPLE.length - known.length;
 
   if(SHOW_NAMES){
     const t=document.getElementById('uniTable');
-    const th=document.createElement('th'); th.textContent='Personen';
-    t.tHead.rows[0].appendChild(th);
+    if(!t.tHead.rows[0].querySelector('.namecol')){
+      const th=document.createElement('th'); th.className='namecol'; th.textContent='Personen';
+      t.tHead.rows[0].appendChild(th);
+    }
     const byField={};
     known.forEach(p=>{(byField[p.field]=byField[p.field]||[]).push(p.name)});
-    for(const r of t.tBodies[0].rows){
+    for(const r of body.rows){
       const f=r.cells[0].innerText.trim();
       const td=document.createElement('td');td.className='note';
       td.textContent=byField[f]?byField[f].join(', '):'—';
       r.appendChild(td);
     }
   }
-})();
 
-/* ---- STADT-BÜNDELUNG ---- */
-(function cities(){
-  const map={};
-  known.filter(p=>p.city!=="—").forEach(p=>{
-    map[p.city]=map[p.city]||{n:0,fields:new Set()};
-    map[p.city].n++; map[p.city].fields.add(p.field);
+  /* STADT-BÜNDELUNG */
+  const cmap={};
+  known.filter(p=>p.city).forEach(p=>{
+    cmap[p.city]=cmap[p.city]||{n:0,fields:new Set()};
+    cmap[p.city].n++; cmap[p.city].fields.add(p.field);
   });
-  const rows=Object.entries(map).sort((a,b)=>b[1].n-a[1].n);
-  const bundle=document.getElementById('cityBundle');
-  rows.forEach(([c,d])=>{
+  const crows=Object.entries(cmap).sort((a,b)=>b[1].n-a[1].n);
+  const bundle=document.getElementById('cityBundle'); bundle.innerHTML="";
+  crows.forEach(([c,d])=>{
     const stay = c==="Berlin";
-    const el=document.createElement('div');
-    el.className='city '+(stay?'stay':'go');
+    const el=document.createElement('div'); el.className='city '+(stay?'stay':'go');
     el.innerHTML=
       '<div class="top"><span class="cn">'+c+'</span><span class="num">'+d.n+'</span></div>'+
       '<div class="fields">'+[...d.fields].join(' · ')+'</div>';
     bundle.appendChild(el);
   });
+
+  /* Hinweis-Text */
+  const nV = PEOPLE.filter(p=>p.group==="vortragende").length;
+  document.getElementById('filterNote').textContent =
+    includeVortragende
+      ? nV+" Vortragende aus weiteren Jahrgängen sind mitgezählt."
+      : "Zeigt Jahrgang 2021. "+nV+" Vortragende weiterer Jahrgänge lassen sich zuschalten.";
+}
+
+const tgl=document.getElementById('tglVortragende');
+tgl.addEventListener('change',()=>render(tgl.checked));
+render(false); // erst Fallback rendern (Seite ist sofort da)
+
+/* ---- CSV-Parser (robust: Anführungszeichen, Kommas, Zeilenumbrüche) ---- */
+function parseCSV(text){
+  const rows=[]; let row=[], cur="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; }
+      else cur+=c;
+    }else{
+      if(c==='"') q=true;
+      else if(c===',') {row.push(cur);cur="";}
+      else if(c==='\n'){row.push(cur);rows.push(row);row=[];cur="";}
+      else if(c==='\r'){}
+      else cur+=c;
+    }
+  }
+  if(cur!==""||row.length){row.push(cur);rows.push(row);}
+  if(!rows.length) return [];
+  const head=rows.shift().map(h=>h.trim().toLowerCase());
+  return rows.filter(r=>r.some(x=>x.trim()!=="")).map(r=>{
+    const o={}; head.forEach((h,i)=>o[h]=(r[i]||"").trim());
+    return {
+      name:o.name||"", field:o.field||"", city:o.city||"",
+      year:o.year?parseInt(o.year,10):null,
+      group:o.group||"2021", src:o.src||"umfrage"
+    };
+  });
+}
+
+/* ---- Live-Daten aus veröffentlichtem Google Sheet laden (optional) ---- */
+if(CSV_URL){
+  fetch(CSV_URL,{cache:"no-store"})
+    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
+    .then(txt=>{
+      const data=parseCSV(txt);
+      if(data.length){ PEOPLE=data; render(tgl.checked);
+        console.log("Live-Daten geladen:",data.length,"Einträge"); }
+    })
+    .catch(e=>console.warn("Live-Daten nicht geladen, nutze Fallback:",e.message));
+}
+
+/* Umfrage-Button: solange kein echter Link gesetzt ist, freundlich abfangen */
+(function(){
+  const btn=document.getElementById('surveyBtn');
+  if(btn && btn.getAttribute('href')==='SURVEY_URL_HIER_EINSETZEN'){
+    btn.textContent='Umfrage kommt in Kürze';
+    btn.style.opacity='.6'; btn.style.cursor='default';
+    btn.addEventListener('click',e=>{e.preventDefault();alert('Die Umfrage wird gerade eingerichtet — schau bald wieder vorbei!');});
+  }
 })();
 </script>
 </body>
