@@ -173,7 +173,7 @@
         <p style="margin:0 0 8px"><strong>Abgefragt wird:</strong> Abi-Jahrgang · Studienfach/Ausbildung · Stadt/Land · aktueller Job (optional) · ob dein Weg anonym gezeigt werden darf · Kontakt (optional).</p>
         <p class="note" style="margin:0">Auswertung anonymisiert. Kontaktdaten werden nicht öffentlich gezeigt. Details im Formular.</p>
       </div>
-      <a class="btn primary big" id="surveyBtn" href="SURVEY_URL_HIER_EINSETZEN" target="_blank" rel="noopener">Zur Umfrage →</a>
+      <a class="btn primary big" id="surveyBtn" href="https://forms.gle/cQCErCnET6DNCRy98" target="_blank" rel="noopener">Zur Umfrage →</a>
     </div>
   </div>
 </section>
@@ -270,7 +270,7 @@
         umfrage=aus Formular, ?=offen.
    ------------------------------------------------------------------------- */
 const SHOW_NAMES = false;
-const CSV_URL = ""; // <- hier die veröffentlichte Google-Sheet-CSV-URL eintragen
+const CSV_URL = "https://docs.google.com/spreadsheets/d/1MQOyfQI0sS6ZgrpDLmATZxOLOKVUCRlbM1XoKqVwhqg/gviz/tq?tqx=out:csv";
 
 const FALLBACK_PEOPLE = [
   // ---- Abi-Jahrgang 2021 ----
@@ -408,7 +408,7 @@ tgl.addEventListener('change',()=>render(tgl.checked));
 render(false); // erst Fallback rendern (Seite ist sofort da)
 
 /* ---- CSV-Parser (robust: Anführungszeichen, Kommas, Zeilenumbrüche) ---- */
-function parseCSV(text){
+function parseCSVRaw(text){
   const rows=[]; let row=[], cur="", q=false;
   for(let i=0;i<text.length;i++){
     const c=text[i];
@@ -424,14 +424,47 @@ function parseCSV(text){
     }
   }
   if(cur!==""||row.length){row.push(cur);rows.push(row);}
+  return rows.filter(r=>r.some(x=>x.trim()!==""));
+}
+
+/* Header einer Frage-Spalte einem Schema-Feld zuordnen (tolerant, Stichwörter).
+   Funktioniert für unser eigenes Schema (name/field/city/...) UND für die
+   deutschen Google-Form-Fragen aus UMFRAGE-google-form.md. */
+function classifyHeader(h){
+  const s=h.toLowerCase();
+  if(s==="name"||s==="field"||s==="city"||s==="year"||s==="group"||s==="src") return s;
+  if(s.includes("jahr")||s.includes("jahrgang")) return "year";
+  if(s.includes("fach")||s.includes("ausbildung")||s.includes("fachrichtung")||s.includes("studienfach")) return "field";
+  if(s.includes("land")) return "country";      // wird an city angehängt
+  if(s.includes("stadt")) return "city";
+  if(s.includes("darf")||s.includes("anonym")||s.includes("gezeigt")) return "consent";
+  if(s.includes("name")) return "name";
+  return null; // Job/Uni/Kontakt/Timestamp etc. ignorieren wir für die Anzeige
+}
+
+/* Roh-CSV (eigenes ODER Google-Form-Schema) -> Personen-Objekte */
+function parseCSV(text){
+  const rows=parseCSVRaw(text);
   if(!rows.length) return [];
-  const head=rows.shift().map(h=>h.trim().toLowerCase());
-  return rows.filter(r=>r.some(x=>x.trim()!=="")).map(r=>{
-    const o={}; head.forEach((h,i)=>o[h]=(r[i]||"").trim());
+  const head=rows.shift();
+  const roles=head.map(classifyHeader);
+  return rows.map(r=>{
+    const o={name:"",field:"",city:"",country:"",year:null,group:"",src:"",consent:""};
+    roles.forEach((role,i)=>{ if(role) o[role]=(r[i]||"").trim(); });
+    // Stadt + Land zusammenführen, falls Land separat
+    let city=o.city;
+    if(o.country && o.country.toLowerCase()!=="deutschland" && o.country!=="" )
+      city = city ? city+" ("+o.country+")" : o.country;
+    // Consent: nur zeigen, wenn nicht ausdrücklich "nein/intern"
+    const c=o.consent.toLowerCase();
+    const hidden = c.includes("nein")||c.includes("intern")||c.includes("nur für");
     return {
-      name:o.name||"", field:o.field||"", city:o.city||"",
+      name:o.name||"",
+      field: hidden ? "" : (o.field||""),
+      city:  hidden ? "" : city,
       year:o.year?parseInt(o.year,10):null,
-      group:o.group||"2021", src:o.src||"umfrage"
+      group:o.group||"2021",
+      src:o.src||"umfrage"
     };
   });
 }
@@ -441,11 +474,15 @@ if(CSV_URL){
   fetch(CSV_URL,{cache:"no-store"})
     .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
     .then(txt=>{
-      const data=parseCSV(txt);
-      if(data.length){ PEOPLE=data; render(tgl.checked);
-        console.log("Live-Daten geladen:",data.length,"Einträge"); }
+      const survey=parseCSV(txt).filter(p=>p.field||p.city); // nur mit Inhalt
+      if(survey.length){
+        // Umfrage ERGÄNZT den recherchierten Bestand (ersetzt ihn nicht)
+        PEOPLE = FALLBACK_PEOPLE.concat(survey);
+        render(tgl.checked);
+        console.log("Umfrage-Daten ergänzt:",survey.length,"Einträge");
+      }
     })
-    .catch(e=>console.warn("Live-Daten nicht geladen, nutze Fallback:",e.message));
+    .catch(e=>console.warn("Umfrage-Daten nicht geladen, nutze Fallback:",e.message));
 }
 
 /* Umfrage-Button: solange kein echter Link gesetzt ist, freundlich abfangen */
