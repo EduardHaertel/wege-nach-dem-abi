@@ -82,15 +82,6 @@
   .city.stay{border-left:4px solid var(--green)}
   .city.go{border-left:4px solid var(--petrol)}
 
-  /* MILESTONES */
-  .miles{display:grid;gap:14px}
-  .mile{display:grid;grid-template-columns:160px 1fr;gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
-  .mile .age{font-weight:800;color:var(--petrol);font-size:.98rem}
-  .mile .age .sm{display:block;color:var(--soft);font-size:.78rem;font-weight:600;margin-top:2px}
-  .mile ul{margin:0;padding-left:18px}
-  .mile li{margin:3px 0}
-  @media(max-width:560px){.mile{grid-template-columns:1fr}}
-
   /* RESOURCES */
   .rescat{margin-top:24px}
   .rescat h3{margin:0 0 6px;font-size:1.08rem;color:#15212c}
@@ -120,27 +111,15 @@
     <div class="cta-row">
       <a class="btn primary" href="#ressourcen">Direkt zu den Links</a>
       <a class="btn" href="#wege">Wohin gehen die Leute?</a>
-      <a class="btn" href="#milestones">Was wann zählt</a>
     </div>
     <div class="hook"><span class="dot"></span><span>Auch <b>Peter Scholze</b> (Fields-Medaille 2018, „Mathe-Nobelpreis") saß auf diesen Bänken. Es fängt hier an.</span></div>
   </div>
 </header>
 
-<!-- ============ KERNBOTSCHAFT ============ -->
-<section id="idee">
-  <div class="wrap">
-    <h2><span class="num">01</span>Warum überhaupt eine Karte?</h2>
-    <p class="sub">Die meisten fangen mit 17 an, über ihren Weg nachzudenken — oft zu spät für Stipendien, Auslandsjahre und Fristen. Der einzige Trick: früh wissen, was es gibt.</p>
-    <div class="callout">
-      <strong>Orientierung schlägt Warten auf Talent.</strong> Mit 14 kann man schon Aktivitäten aufnehmen, die später für Stipendien zählen. Pre-Docs, Sommerschulen, Research Assistantships, Auslandsstipendien — <em>die existieren alle. Die meisten wissen nur nicht, dass es sie gibt.</em> Genau dafür ist diese Seite.
-    </div>
-  </div>
-</section>
-
 <!-- ============ WEGE: gebündelt ============ -->
 <section id="wege">
   <div class="wrap">
-    <h2><span class="num">02</span>Wohin gehen die Leute?</h2>
+    <h2><span class="num">01</span>Wohin gehen die Leute?</h2>
     <p class="sub">Ein aktueller Jahrgang, anonym ausgewertet. Namen bleiben weg — es geht um die <em>Richtungen</em>. Zwei Blickwinkel: nach <strong>Fach</strong> und nach <strong>Stadt</strong>. So sieht man, wie breit die Wege wirklich streuen — und dass „irgendwas mit Berlin" längst nicht alles ist.</p>
 
     <div class="stats" id="statRow"></div>
@@ -162,42 +141,10 @@
   </div>
 </section>
 
-<!-- ============ MEILENSTEINE ============ -->
-<section id="milestones">
-  <div class="wrap">
-    <h2><span class="num">03</span>Was wann zählt</h2>
-    <p class="sub">Nicht die Noten sind der Engpass, sondern das <em>Timing</em>. Diese Stationen bauen aufeinander auf. Wer die Fristen früh kennt, hat später die Wahl — statt hinterherzurennen.</p>
-    <div class="miles">
-      <div class="mile"><div class="age">Klasse 7–9<span class="sm">~12–15 J.</span></div><div><ul>
-        <li>Englisch als <strong>Werkzeug</strong> aufbauen, nicht als Schulfach</li>
-        <li>Erste Wettbewerbe: Mathe-/Physik-/Informatik-Olympiaden, Jugend forscht</li>
-        <li>Eine AG mit Kontinuität — Dranbleiben schlägt Vielfalt</li>
-        <li>MINT-EC-Angebote nutzen (ihr seid schon Mitglied)</li>
-      </ul></div></div>
-      <div class="mile"><div class="age">Klasse 10<span class="sm">~15–16 J.</span></div><div><ul>
-        <li>Auslandsjahr entscheiden — <strong>Fristen (AFS, YFU) laufen &gt;1 Jahr vorher</strong></li>
-        <li>Sprachzertifikate ins Auge fassen (IELTS/TOEFL)</li>
-        <li>Profil schärfen: 1–2 Themen vertiefen statt alles anfangen</li>
-      </ul></div></div>
-      <div class="mile"><div class="age">Klasse 11<span class="sm">~16–17 J.</span></div><div><ul>
-        <li><strong>Studienstiftung:</strong> Schulnominierung passiert jetzt — sei auf dem Schirm</li>
-        <li>Internationale Bewerbungen vorbereiten: Common App, UCAS (frühe Fristen!)</li>
-        <li>Stipendienanträge parallel zu deutschen NC-Bewerbungen denken</li>
-        <li>Research Internships / Pre-College-Programme anfragen</li>
-      </ul></div></div>
-      <div class="mile"><div class="age">Nach dem Abi<span class="sm">~18+</span></div><div><ul>
-        <li>Strukturiertes Gap Year statt „einfach frei"</li>
-        <li>Sommerschulen, Research Assistantships, Pre-Docs</li>
-        <li>Bachelor mit Auslandsoption (Erasmus+) von Anfang an mitdenken</li>
-      </ul></div></div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ RESSOURCEN ============ -->
 <section id="ressourcen">
   <div class="wrap">
-    <h2><span class="num">04</span>Die Ressourcen</h2>
+    <h2><span class="num">02</span>Die Ressourcen</h2>
     <p class="sub">Keine endlose Liste — nur die, die wirklich zählen. Alle klickbar, alle offiziell. <strong>Das hier ist der Grund für den QR-Code.</strong></p>
 
     <div class="rescat">
@@ -281,6 +228,7 @@ const PEOPLE = [
   {name:"Anand Chuluunkhuu",     field:"Ingenieur/Chemie", city:"Berlin",  src:"v/w"},
   {name:"Möne Arndt",            field:"Ingenieur/Chemie", city:"Berlin",  src:"v"},
   {name:"Paul Siewert",          field:"Mathematik",    city:"Cambridge",  src:"v/w"},
+  {name:"Yorick Zeschke",        field:"Informatik/IT", city:"Amsterdam→London",  src:"w"},
   {name:"Bastian Reinhardt",     field:"Bundeswehr",    city:"—",          src:"v"},
   // — noch offen / in Klärung —
   {name:"Agnelo Pilgram",field:"—",city:"—",src:"?"},{name:"David Vasquez",field:"—",city:"—",src:"?"},
@@ -294,9 +242,11 @@ const PEOPLE = [
   {name:"Sheng D.",field:"—",city:"—",src:"?"},{name:"Timon Arndt",field:"—",city:"—",src:"?"},
   {name:"Tom Romeo Doil",field:"—",city:"—",src:"?"},{name:"Chioma Tischendorf",field:"—",city:"—",src:"?"},
   {name:"Max Reinhardt",field:"—",city:"—",src:"?"},{name:"Richard Otto Winne",field:"—",city:"—",src:"?"},
-  {name:"Richard Otto Wille",field:"—",city:"—",src:"?"},{name:"Yorick Zeschke",field:"—",city:"—",src:"?"},
+  {name:"Richard Otto Wille",field:"—",city:"—",src:"?"},
   {name:"Quynh Anh",field:"—",city:"—",src:"?"},{name:"Ali Ahmed Amroune",field:"—",city:"—",src:"?"},
-  {name:"Thuy Lai",field:"—",city:"—",src:"?"}
+  {name:"Thuy Lai",field:"—",city:"—",src:"?"},{name:"Minh Ngo",field:"—",city:"—",src:"?"},
+  {name:"Arthur Gerhardt",field:"—",city:"—",src:"?"},{name:"Timon Arnold",field:"—",city:"—",src:"?"},
+  {name:"Adrian Bufe",field:"—",city:"—",src:"?"},{name:"Philip Datchev",field:"—",city:"—",src:"?"}
 ];
 
 const known = PEOPLE.filter(p=>p.field!=="—");
