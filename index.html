@@ -11,9 +11,9 @@
     --ink:#1c2733; --muted:#5b6b78; --soft:#8394a1;
     --petrol:#2f7d8f; --petrol-d:#215a68; --green:#3ba676; --amber:#c9862f;
     --chip:#e3eef1;
-    --radius:16px; --maxw:960px;
+    --radius:12px; --maxw:960px;
     --sans:"Inter","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
-    --shadow:0 1px 2px rgba(28,39,51,.04),0 6px 20px rgba(28,39,51,.05);
+    --shadow:0 1px 2px rgba(28,39,51,.04),0 2px 8px rgba(28,39,51,.04);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -23,7 +23,7 @@
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
 
   header.hero{
-    padding:70px 0 46px;
+    padding:48px 0 34px;
     background:
       radial-gradient(1100px 380px at 85% -20%, rgba(59,166,118,.16), transparent 62%),
       radial-gradient(900px 460px at -5% 0%, rgba(47,125,143,.14), transparent 60%),
@@ -34,8 +34,8 @@
   h1{font-size:clamp(2rem,5.2vw,3.1rem);line-height:1.1;margin:0 0 16px;font-weight:800;letter-spacing:-.025em;color:#15212c}
   h1 .thin{color:var(--muted);font-weight:500}
   .lede{font-size:clamp(1.03rem,2.2vw,1.24rem);color:var(--muted);max-width:60ch;margin:0 0 26px}
-  .keywords{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
-  .keywords span{display:inline-block;padding:10px 20px;border-radius:999px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);font-weight:700;font-size:clamp(1rem,2.4vw,1.2rem);color:var(--petrol-d);letter-spacing:-.01em}
+  .keywords{display:flex;flex-wrap:wrap;gap:9px;margin-top:6px}
+  .keywords span{display:inline-block;padding:7px 16px;border-radius:999px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);font-weight:700;font-size:clamp(.9rem,2vw,1.05rem);color:var(--petrol-d);letter-spacing:-.01em}
   .keywords span:nth-child(2){color:var(--green)}
   .cta-row{display:flex;flex-wrap:wrap;gap:12px}
   .btn{display:inline-block;padding:12px 20px;border-radius:12px;font-weight:600;font-size:.96rem;border:1px solid var(--line);background:var(--panel);color:var(--ink);box-shadow:var(--shadow);transition:transform .12s ease,box-shadow .12s ease}
@@ -46,10 +46,10 @@
   .hook b{color:var(--ink)}
   .hook .dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex:none}
 
-  section{padding:54px 0;border-bottom:1px solid var(--line)}
-  h2{font-size:clamp(1.45rem,3.6vw,2.05rem);margin:0 0 8px;letter-spacing:-.015em;color:#15212c}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(1.35rem,3.2vw,1.8rem);margin:0 0 6px;letter-spacing:-.015em;color:#15212c}
   h2 .num{color:var(--green);font-size:.68em;font-weight:800;margin-right:.5rem;vertical-align:.14em}
-  .sub{color:var(--muted);margin:0 0 26px;max-width:66ch}
+  .sub{color:var(--muted);margin:0 0 18px;max-width:66ch;font-size:.95rem}
 
   /* FILTER BAR */
   .filterbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 20px}
@@ -64,16 +64,16 @@
   .filternote{color:var(--soft);font-size:.85rem}
 
   /* STAT ROW */
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:6px 0 4px}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
-  .stat .big{font-size:2rem;font-weight:800;color:var(--petrol);line-height:1}
-  .stat .lbl{color:var(--muted);font-size:.88rem;margin-top:6px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:4px 0 2px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow)}
+  .stat .big{font-size:1.6rem;font-weight:800;color:var(--petrol);line-height:1}
+  .stat .lbl{color:var(--muted);font-size:.82rem;margin-top:4px}
 
   /* TABLE */
   .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow)}
-  table{border-collapse:collapse;width:100%;min-width:560px;font-size:.95rem}
-  thead th{text-align:left;padding:14px 18px;background:var(--panel-2);color:var(--muted);font-weight:700;font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line)}
-  tbody td{padding:14px 18px;border-bottom:1px solid var(--line);vertical-align:middle}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:.93rem}
+  thead th{text-align:left;padding:10px 16px;background:var(--panel-2);color:var(--muted);font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  tbody td{padding:9px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
   tbody tr:last-child td{border-bottom:none}
   tbody tr:hover{background:#f4fafc}
   .field{color:var(--petrol-d);font-weight:700}
@@ -88,32 +88,32 @@
   .bar .cnt{font-weight:800;color:var(--ink);min-width:20px;text-align:right}
 
   /* CITY BUNDLE */
-  .bundle{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:6px}
-  .city{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+  .bundle{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:4px}
+  .city{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:11px 14px;box-shadow:var(--shadow)}
   .city .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-  .city .cn{font-weight:800;font-size:1.05rem}
+  .city .cn{font-weight:800;font-size:1rem}
   .city .num{font-weight:800;color:var(--petrol)}
-  .city .fields{color:var(--muted);font-size:.86rem;margin-top:6px}
+  .city .fields{color:var(--muted);font-size:.83rem;margin-top:3px}
   .city.stay{border-left:4px solid var(--green)}
   .city.go{border-left:4px solid var(--petrol)}
 
   /* RESOURCES */
-  .rescat{margin-top:24px}
-  .rescat h3{margin:0 0 6px;font-size:1.08rem;color:#15212c}
-  .rescat .catnote{color:var(--muted);font-size:.86rem;margin:0 0 12px;max-width:72ch}
-  .reslist{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-  .res{display:block;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 16px;color:var(--ink);box-shadow:var(--shadow);transition:border-color .15s,transform .12s}
+  .rescat{margin-top:16px}
+  .rescat h3{margin:0 0 5px;font-size:1rem;color:#15212c}
+  .rescat .catnote{color:var(--muted);font-size:.84rem;margin:0 0 9px;max-width:72ch}
+  .reslist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+  .res{display:block;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 13px;color:var(--ink);box-shadow:var(--shadow);transition:border-color .15s,transform .12s}
   .res:hover{border-color:var(--petrol);transform:translateY(-1px);text-decoration:none}
-  .res .rt{font-weight:700}
-  .res .rd{color:var(--muted);font-size:.84rem;margin-top:3px}
+  .res .rt{font-weight:700;font-size:.92rem}
+  .res .rd{color:var(--muted);font-size:.82rem;margin-top:2px}
   .res .arrow{float:right;color:var(--soft)}
 
-  .callout{background:linear-gradient(180deg,#f0f8f4,#ffffff);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:14px;padding:16px 20px;margin:16px 0 0;color:var(--ink);font-size:.94rem;box-shadow:var(--shadow)}
+  .callout{background:linear-gradient(180deg,#f0f8f4,#ffffff);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:12px;padding:13px 16px;margin:14px 0 0;color:var(--ink);font-size:.9rem;box-shadow:var(--shadow)}
   .callout strong{color:var(--petrol-d)}
 
   /* GROW + SURVEY */
-  .growbox{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(180deg,#eef6f8,#ffffff);border:1px solid var(--line);border-left:4px solid var(--petrol);border-radius:14px;padding:16px 20px;margin:22px 0 0;box-shadow:var(--shadow)}
-  .growbox .growicon{font-size:1.4rem;line-height:1.3;flex:none}
+  .growbox{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(180deg,#eef6f8,#ffffff);border:1px solid var(--line);border-left:4px solid var(--petrol);border-radius:12px;padding:13px 16px;margin:16px 0 0;color:var(--ink);font-size:.9rem;box-shadow:var(--shadow)}
+  .growbox .growicon{font-size:1.3rem;line-height:1.3;flex:none}
   .growbox strong{color:var(--petrol-d)}
   .surveybox{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
   .surveytext{flex:1;min-width:240px}
@@ -155,7 +155,7 @@
 
     <div class="stats" id="statRow"></div>
 
-    <h3 style="margin:30px 0 10px;font-size:1.1rem;color:#15212c">Nach Fach</h3>
+    <h3 style="margin:20px 0 8px;font-size:1rem;color:#15212c">Nach Fach</h3>
     <div class="table-scroll">
       <table id="uniTable">
         <thead>
@@ -165,7 +165,7 @@
       </table>
     </div>
 
-    <h3 style="margin:30px 0 10px;font-size:1.1rem;color:#15212c">Nach Stadt — wer bleibt, wer geht</h3>
+    <h3 style="margin:20px 0 8px;font-size:1rem;color:#15212c">Nach Stadt — wer bleibt, wer geht</h3>
     <div class="bundle" id="cityBundle"></div>
 
 
@@ -191,6 +191,7 @@
         <a class="res" href="https://www.cusanuswerk.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Cusanuswerk</span><div class="rd">Katholisches Begabtenförderungswerk.</div></a>
         <a class="res" href="https://www.eles-studienwerk.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">ELES</span><div class="rd">Ernst-Ludwig-Ehrlich-Studienwerk (jüdisch).</div></a>
         <a class="res" href="https://www.avicenna-studienwerk.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Avicenna-Studienwerk</span><div class="rd">Muslimisches Begabtenförderungswerk.</div></a>
+        <a class="res" href="https://www.sdw.org/studierende-und-promovierende/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Stiftung der Deutschen Wirtschaft (sdw)</span><div class="rd">Begabtenförderung, Fokus Unternehmergeist &amp; Initiative.</div></a>
       </div>
     </div>
 
@@ -218,6 +219,7 @@
         <a class="res" href="https://www.ouac.on.ca/planning/i-am-an-international-applicant/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">OUAC (Kanada / Ontario)</span><div class="rd">Zentrale Bewerbung für Unis in Ontario — für internationale Bewerber:innen.</div></a>
         <a class="res" href="https://erasmus-plus.ec.europa.eu/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Erasmus+</span><div class="rd">Nicht nur Semester — auch Praktika.</div></a>
         <a class="res" href="https://www.daad.de/rise/de/rise-germany/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">DAAD RISE</span><div class="rd">Forschungspraktika — früh merken.</div></a>
+        <a class="res" href="https://amgenscholars.com/europe-programme/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">Amgen Scholars (Europe)</span><div class="rd">Bezahltes Sommer-Forschungsprogramm an Top-Unis (ETH, Cambridge, Karolinska …).</div></a>
         <a class="res" href="https://www.afs.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">AFS</span><div class="rd">Schüleraustausch / Auslandsjahr.</div></a>
         <a class="res" href="https://www.yfu.de/" target="_blank" rel="noopener"><span class="arrow">↗</span><span class="rt">YFU Deutschland</span><div class="rd">Schüleraustausch / Auslandsjahr.</div></a>
       </div>
