@@ -477,12 +477,12 @@ function parseCSVRaw(text){
    normalisiert). Erweitern nach Bedarf. --- */
 /* Kanonische Labels: Schlüssel = Anzeige-Text, Werte = erkannte Varianten. */
 const FIELD_ALIASES = {
-  "Informatik/IT":["informatik","it","cs","computer science","computerwissenschaft","informatics","software","softwareentwicklung","angewandte informatik"],
+  "Informatik/IT":["informatik","it","cs","computer science","computerwissenschaft","informatics","software","softwareentwicklung","angewandte informatik","mathematische informatik"],
   "Physik":["physik","physics"],
   "Medizin":["medizin","humanmedizin","medicine","med"],
-  "Mathematik":["mathematik","mathe","maths","math","mathematics"],
+  "Mathematik":["mathematik","mathe","maths","math","mathematics","mathematik und geographie"],
   "Jura":["jura","rechtswissenschaft","recht","law","rechtswissenschaften"],
-  "Ingenieurwesen":["ingenieurwesen","ingenieur","engineering","maschinenbau","mechanical engineering","mechanical","chemieingenieurwesen","chemical engineering","verfahrenstechnik","robotik","robotics","elektrotechnik","electrical engineering","bauwesen","bauingenieurwesen","civil engineering","energietechnik","luft- und raumfahrt","aerospace"],
+  "Ingenieurwesen":["ingenieurwesen","ingenieur","engineering","maschinenbau","mechanical engineering","mechanical","chemieingenieurwesen","chemical engineering","verfahrenstechnik","robotik","robotics","elektrotechnik","electrical engineering","bauwesen","bauingenieurwesen","civil engineering","energietechnik","luft- und raumfahrt","aerospace","schiffs- und meerestechnik","schiffstechnik","meerestechnik","schiffbau"],
   "Chemie":["chemie","chemistry"],
   "BWL/Wirtschaft":["bwl","betriebswirtschaft","wirtschaft","business","management","vwl","volkswirtschaft","economics","business administration"],
   "Psychologie":["psychologie","psychology"],
@@ -514,15 +514,18 @@ function classifyHeader(h){
   if(s.includes("jahr")) return "year";
   // "Was hast du ALLES gemacht" (Historie) & "Was HAUPTSÄCHLICH jetzt" (Kategorie):
   // Kategorie als Fallback-Feld, Historie ignorieren.
-  if(s.includes("hauptsächlich")||s.includes("hauptsaechlich")) return "category";
+  if(s.includes("hauptsächlich")||s.includes("hauptsaechlich")||s.includes("überwiegend")||s.includes("ueberwiegend")||s.includes("machst du")) return "category";
   if(s.includes("alles gemacht")||s.includes("seit dem abi")||s.includes("gemacht")) return null;
   // aktueller Ort hat eigene Kennung (Vorrang vor Studienort)
   if(s.includes("jetzt")||s.includes("arbeitest")||s.includes("lebst")) return "city";
   if(s.includes("ort")||s.includes("stadt")) return "studyplace";
   if(s.includes("land")) return "country";
+  // Studienfach zuerst: das echte Studienfach gewinnt vor dem freien Job-Text.
   if(s.includes("fach")||s.includes("ausbildung")||s.includes("fachrichtung")||
-     s.includes("branche")||s.includes("was genau")||s.includes("tätigkeit")||
-     s.includes("taetigkeit")||s.includes("richtung")) return "field";
+     s.includes("was genau")||s.includes("richtung")) return "field";
+  // Job/Tätigkeit/Branche: separate Spur, nur Fallback wenn kein Fach/Kategorie da ist.
+  if(s.includes("job")||s.includes("tätigkeit")||s.includes("taetigkeit")||
+     s.includes("branche")) return "job";
   if(s.includes("darf")||s.includes("anonym")||s.includes("gezeigt")) return "consent";
   if(s.includes("name")) return "name";
   return null; // Uni/Kontakt/Timestamp/Auslandsstationen: nicht für die Tabelle
@@ -537,14 +540,14 @@ function parseCSV(text){
   const head=rows.shift();
   const roles=head.map(classifyHeader);
   return rows.map(r=>{
-    const o={name:"",field:"",city:"",studyplace:"",country:"",year:"",group:"",src:"",consent:"",category:""};
+    const o={name:"",field:"",city:"",studyplace:"",country:"",year:"",group:"",src:"",consent:"",category:"",job:""};
     roles.forEach((role,i)=>{
       if(!role) return;
       const val=(r[i]||"").trim();
       if(val && !o[role]) o[role]=val; // erste nicht-leere gewinnt
     });
-    // Kein Fach angegeben (z.B. reiner Job-Weg)? -> Kategorie ("Arbeiten/Job" etc.) nutzen
-    if(!o.field && o.category) o.field=o.category;
+    // Fach-Priorität: echtes Studienfach > Kategorie ("Arbeiten/Job" etc.) > freier Job-Text.
+    if(!o.field) o.field = o.category || o.job;
     // Aktueller Ort (city) hat Vorrang; sonst Studienort
     let city = o.city || o.studyplace;
     if(o.country && !["","deutschland","germany"].includes(o.country.toLowerCase()))
