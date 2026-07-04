@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Die Karte, die niemand zeigt · Wohin Hertzis nach dem Abi gehen</title>
+<script>
+/* QR-Fix: Der alte QR-Code zeigt auf …/#ressourcen und würde nach unten
+   scrollen. Wir fangen JEDEN eingehenden Anker ab, entfernen ihn und landen
+   oben auf der Startseite — so muss der gedruckte QR nicht neu erstellt werden.
+   Läuft vor dem Rendern, damit der Browser gar nicht erst hinspringt. */
+if(location.hash){
+  history.replaceState(null,"",location.pathname+location.search);
+  window.addEventListener('load',function(){window.scrollTo(0,0);});
+}
+</script>
 <meta name="description" content="Wohin Absolvent:innen des Heinrich-Hertz-Gymnasiums Berlin nach dem Abi gehen - echte Wege, gebündelt nach Stadt & Feld, plus die Ressourcen, die wirklich zählen.">
 <style>
   :root{
@@ -131,6 +141,8 @@
   .ctabox .mailbtn:hover{transform:translateY(-1px);text-decoration:none}
   .growmsg{background:linear-gradient(180deg,#fff8ec,#ffffff);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:12px;padding:14px 18px;margin:0 0 22px;color:var(--ink);font-size:.96rem;box-shadow:var(--shadow)}
   .growmsg strong{color:var(--amber)}
+  .contactline{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;color:var(--muted);font-size:.95rem}
+  .contactline .ct-label{font-weight:700;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -257,10 +269,9 @@
     <div class="growmsg">
       <strong>Wege ändern ist okay - und oft nötig.</strong> Kaum jemand geht schnurgerade. Umwege, Fachwechsel, Abbrüche, Neustarts: Das ist kein Scheitern, sondern wie man wächst und herausfindet, was passt. Niemand hat mit 17 die endgültige Antwort - und das muss auch niemand.
     </div>
-    <div class="ctabox">
-      <h3>Fragen? Schreib mir einfach.</h3>
-      <p>Viele von euch haben Fragen - zu Studium, Ausland, Stipendien, Bewerbungen oder einfach „wie fange ich an?". Ich antworte gern. Kein Thema ist zu klein.</p>
-      <a class="mailbtn" href="mailto:eduardhaertel@gmail.com?subject=Frage%20nach%20dem%20Vortrag%20(HHG)">✉ eduardhaertel@gmail.com</a>
+    <div class="contactline">
+      <span class="ct-label">Fragen / Kontakt</span>
+      <a href="mailto:eduardhaertel@gmail.com?subject=Frage%20(HHG)">eduardhaertel@gmail.com</a>
     </div>
   </div>
 </section>
