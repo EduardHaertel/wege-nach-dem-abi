@@ -56,6 +56,26 @@ if(location.hash){
   .hook b{color:var(--ink)}
   .hook .dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex:none}
 
+  /* GEFLECHT-ANIMATION — nur die verbundenen Punkte, auf hellem Hintergrund */
+  .netfig{margin:30px 0 0;padding:0;position:relative}
+  .netfig-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 6px}
+  .netfig-title{color:#15212c;font-weight:800;font-size:clamp(1.1rem,2.6vw,1.5rem);letter-spacing:-.02em}
+  .netfig-year{color:var(--petrol-d);font-weight:800;font-size:.8rem;letter-spacing:.06em;
+    background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:4px 12px;white-space:nowrap}
+  #netCanvas{display:block;width:100%;height:320px}
+  .netfig-cap{margin:8px 0 0;color:var(--muted);font-size:.85rem}
+  @media(max-width:640px){ #netCanvas{height:260px} }
+
+  /* TIPPS-WAND — kompakte Zitat-Chips */
+  .tipwall{columns:230px 4;column-gap:10px;margin-top:8px}
+  .tip{break-inside:avoid;margin:0 0 10px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;color:var(--ink);font-size:.85rem;line-height:1.45;
+    position:relative;transition:border-color .15s,transform .12s}
+  .tip:hover{border-color:var(--green);transform:translateY(-1px)}
+  .tip::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:3px;
+    background:var(--green);opacity:.55}
+  @media(max-width:520px){ .tipwall{columns:1} }
+
   section{padding:34px 0;border-bottom:1px solid var(--line)}
   h2{font-size:clamp(1.35rem,3.2vw,1.8rem);margin:0 0 6px;letter-spacing:-.015em;color:#15212c}
   h2 .num{color:var(--green);font-size:.68em;font-weight:800;margin-right:.5rem;vertical-align:.14em}
@@ -143,6 +163,7 @@ if(location.hash){
   .growmsg strong{color:var(--amber)}
   .contactline{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;color:var(--muted);font-size:.95rem}
   .contactline .ct-label{font-weight:700;color:var(--ink)}
+  .contacthint{margin:8px 0 0;color:var(--soft);font-size:.85rem}
 </style>
 </head>
 <body>
@@ -150,19 +171,28 @@ if(location.hash){
 <header class="hero">
   <div class="wrap">
     <p class="eyebrow">Heinrich-Hertz-Gymnasium Berlin</p>
-    <h1>Die Karte, die niemand zeigt.<br><span class="thin">Wohin Hertzis nach dem Abi gehen.</span></h1>
+    <h1>Die Karte, die niemand zeigt:<br><span class="thin">Wohin Hertzis nach dem Abi gehen.</span></h1>
     <div class="keywords">
       <span>Auslandsstudium</span>
       <span>Stipendien</span>
       <span>Startup</span>
     </div>
+
+    <figure class="netfig" aria-hidden="true">
+      <div class="netfig-head">
+        <span class="netfig-title">Es gibt keine optimale Route.</span>
+        <span class="netfig-year" id="netYear">·</span>
+      </div>
+      <canvas id="netCanvas"></canvas>
+      <figcaption class="netfig-cap" id="netCap">Jeder Punkt eine Station. Chronologisch begonnen — und doch ein Geflecht.</figcaption>
+    </figure>
   </div>
 </header>
 
 <!-- ============ WEGE: gebündelt ============ -->
 <section id="wege">
   <div class="wrap">
-    <h2><span class="num">01</span>Wohin gehen die Leute?</h2>
+    <h2><span class="num">01</span>Wohin und Was?</h2>
     <p class="sub">Anonym ausgewertet, nach <strong>Fachrichtung</strong> und <strong>Stadt</strong> sortiert. </p>
 
     <div class="filterbar">
@@ -179,7 +209,7 @@ if(location.hash){
     <div class="table-scroll">
       <table id="uniTable">
         <thead>
-          <tr><th>Studienfach / Fachrichtung</th><th>Wo</th><th class="barcell">Wie viele</th></tr>
+          <tr><th>Studienfach / Fachrichtung</th><th>Wo jetzt</th><th class="barcell">Wie viele</th></tr>
         </thead>
         <tbody id="uniBody"></tbody>
       </table>
@@ -198,10 +228,19 @@ if(location.hash){
   </div>
 </section>
 
+<!-- ============ TIPPS / WEISHEITEN ============ -->
+<section id="tipps">
+  <div class="wrap">
+    <h2><span class="num">02</span>Was Ehemalige euch mitgeben</h2>
+    <p class="sub"><span id="tipCount">…</span> Ratschläge aus der Umfrage — anonym, wörtlich, ungefiltert.</p>
+    <div class="tipwall" id="tipWall"></div>
+  </div>
+</section>
+
 <!-- ============ RESSOURCEN ============ -->
 <section id="ressourcen">
   <div class="wrap">
-    <h2><span class="num">02</span>Die Ressourcen</h2>
+    <h2><span class="num">03</span>Die Ressourcen</h2>
 
     <div class="rescat">
       <h3>Begabtenförderungswerke <span class="note"></span></h3>
@@ -273,6 +312,7 @@ if(location.hash){
       <span class="ct-label">Fragen / Kontakt</span>
       <a href="mailto:eduardhaertel@gmail.com?subject=Frage%20(HHG)">eduardhaertel@gmail.com</a>
     </div>
+    <p class="contacthint">Einige Ehemalige sind ansprechbar — frag einfach, ich leite es weiter.</p>
   </div>
 </section>
 
@@ -371,7 +411,7 @@ function render(){
     [pool.length,"Personen erfasst"],
     [fields.size,"verschiedene Fächer"],
     [cities.size,"Studienorte"],
-    [(inBerlin+outside)>0 ? inBerlin+"/"+(inBerlin+outside) : "–","bleiben in Berlin"]
+    [(inBerlin+outside)>0 ? inBerlin+"/"+(inBerlin+outside) : "–","in Berlin"]
   ];
   const row=document.getElementById('statRow'); row.innerHTML="";
   statData.forEach(([b,l])=>{
@@ -585,6 +625,11 @@ function classifyHeader(h){
   // Kategorie als Fallback-Feld, Historie ignorieren.
   if(s.includes("hauptsächlich")||s.includes("hauptsaechlich")||s.includes("überwiegend")||s.includes("ueberwiegend")||s.includes("machst du")) return "category";
   if(s.includes("alles gemacht")||s.includes("seit dem abi")||s.includes("gemacht")) return null;
+  // Freitext-Spalten für die Geflecht-Grafik (VOR "land", weil "Auslandsstationen"
+  // sonst als country zählt).
+  if(s.includes("station")||s.includes("besondere weg")) return "stations";
+  if(s.includes("frei")||s.includes("lebensweg")||s.includes("erzähl")||s.includes("erzaehl")) return "story";
+  if(s.includes("tipp")||s.includes("weisheit")||s.includes("rat für")||s.includes("mitgeben")) return "tip";
   // aktueller Ort hat eigene Kennung (Vorrang vor Studienort)
   if(s.includes("jetzt")||s.includes("arbeitest")||s.includes("lebst")) return "city";
   if(s.includes("ort")||s.includes("stadt")) return "studyplace";
@@ -600,6 +645,57 @@ function classifyHeader(h){
   return null; // Uni/Kontakt/Timestamp/Auslandsstationen: nicht für die Tabelle
 }
 
+/* ===== GEFLECHT: Stationen pro Person aus Feldern + Freitext ableiten ==========
+   Idee: Start immer "HHG", dann chronologisch, was an Info da ist (flexibel — nicht
+   jede:r hat studiert). Institutionen dürfen namentlich stehen; Orte in derselben
+   groben Granularität wie die Tabellen; eigene Firmen bleiben außen vor. */
+
+/* Institutionen/Programme, die als Knoten NAMENTLICH stehen dürfen (nicht personen-
+   identifizierend). Schlüssel = Anzeige, Werte = im Freitext gesuchte Varianten. */
+const INSTITUTIONS = {
+  "CERN":["cern"], "Fraunhofer":["fraunhofer"], "Helmholtz":["helmholtz"],
+  "Max Planck":["max planck","max-planck","mpi"], "DESY":["desy"],
+  "Bundeswehr":["bundeswehr"], "Bundesministerium":["bundesministerium","ministerium"],
+  "Charité":["charité","charite"], "ETH Zürich":["eth zürich","eth zurich","ethz"],
+  "Berkeley":["berkeley"], "Oxford":["oxford"], "Cambridge":["cambridge"],
+  "UCL":["university college london","ucl"], "Stanford":["stanford"],
+  "AIESEC":["aiesec"], "Erasmus":["erasmus"], "Formula Student":["formula student"],
+  "FSJ":["fsj","freiwilliges soziales"], "Zivildienst":["zivildienst"],
+  "Promotion":["promotion","phd","doktor"], "Startup":["startup","start-up","gegründet","gründung","co-founder","gründer"],
+  "Ehrenamt":["ehrenamt"], "Au-Pair":["au-pair","au pair"]
+};
+/* Weltweite Orte, die als Auslands-Stationen auftauchen (grobe Stadt-/Länderknoten). */
+const WORLD_PLACES = ["toronto","montreal","berkeley","oslo","beijing","peking","brisbane","singapur","singapore",
+  "hong kong","hongkong","dubai","abu dhabi","toulouse","lille","paris","göteborg","goteborg","helsinki","kopenhagen",
+  "trondheim","seoul","washington","kolkata","sydney","spanien","schottland","australien","neuseeland","ruanda",
+  "äthiopien","china","usa","großbritannien","lausanne","zürich","wien","bologna","rumänien","afrika","sofia"];
+
+/* Aus einem Freitext-Blob namentlich erlaubte Knoten ziehen (Institutionen + Orte). */
+function extractNodes(txt){
+  if(!txt) return [];
+  const s=txt.toLowerCase();
+  const out=[];
+  for(const label in INSTITUTIONS){
+    if(INSTITUTIONS[label].some(k=>s.includes(k))) out.push({t:label,kind:"inst"});
+  }
+  const ACRONYM={usa:"USA"};
+  for(const p of WORLD_PLACES){
+    if(s.includes(p)) out.push({t:ACRONYM[p]||titleCase(p),kind:"place"});
+  }
+  return out;
+}
+/* Baut die geordnete, deduplizierte Knotenliste für eine Person. */
+function buildJourney(person, o){
+  const nodes=[{t:"HHG",kind:"start"}];
+  const push=n=>{ if(n && n.t && !nodes.some(x=>x.t.toLowerCase()===n.t.toLowerCase())) nodes.push(n); };
+  if(person.field) push({t:person.field,kind:"field"});
+  if(person.studyCity) push({t:person.studyCity,kind:"place"});
+  extractNodes(o.stations).forEach(push);
+  extractNodes(o.story).forEach(push);
+  if(person.city) push({t:person.city,kind:"place"});
+  return nodes;
+}
+
 /* Roh-CSV (eigenes ODER Google-Form-Schema) -> Personen-Objekte.
    Mehrere Spalten können dasselbe Feld liefern (z.B. Fach aus Studium- ODER
    Ausbildung-Abschnitt) -> "erste nicht-leere gewinnt". */
@@ -609,11 +705,14 @@ function parseCSV(text){
   const head=rows.shift();
   const roles=head.map(classifyHeader);
   return rows.map(r=>{
-    const o={name:"",field:"",city:"",studyplace:"",country:"",year:"",group:"",src:"",consent:"",category:"",job:""};
+    const o={name:"",field:"",city:"",studyplace:"",country:"",year:"",group:"",src:"",consent:"",category:"",job:"",stations:"",story:"",tip:""};
     roles.forEach((role,i)=>{
       if(!role) return;
       const val=(r[i]||"").trim();
-      if(val && !o[role]) o[role]=val; // erste nicht-leere gewinnt
+      if(!val) return;
+      // Freitext-Spalten dürfen sich sammeln (mehrere Stations-Spalten) statt "erste gewinnt".
+      if(role==="stations") o.stations = o.stations ? o.stations+" · "+val : val;
+      else if(!o[role]) o[role]=val; // sonst: erste nicht-leere gewinnt
     });
     // Fach-Priorität: echtes Studienfach > Kategorie ("Arbeiten/Job" etc.) > freier Job-Text.
     if(!o.field) o.field = o.category || o.job;
@@ -623,14 +722,18 @@ function parseCSV(text){
     // Ort bewusst GROB halten (Anonymität): nur der aktuelle Ort, sonst Studienort.
     // Kein "(Studium: …)"- und kein Land-Anhang -> bündelt auf reine Stadtnamen.
     let cityShown = coarseCity(o.city || o.studyplace);
-    return {
+    const person = {
       name:o.name||"",
       field: hidden ? "" : normField(o.field||""),
       city:  hidden ? "" : cityShown,
+      studyCity: hidden ? "" : coarseCity(o.studyplace),
       year:o.year?parseInt(o.year,10):null,
       group:o.group||"2021",
-      src:o.src||"umfrage"
+      src:o.src||"umfrage",
+      tip: o.tip||""
     };
+    person.nodes = hidden ? [] : buildJourney(person, o);
+    return person;
   });
 }
 
@@ -643,8 +746,160 @@ if(CSV_URL){
       SURVEY = parseCSV(txt).filter(p=>p.field||p.city);
       if(CURRENT_SOURCE==="survey") render(); // aktualisieren, falls Umfrage-Ansicht aktiv
       console.log("Umfrage-Antworten geladen:",SURVEY.length);
+      startNetAnim(SURVEY.filter(p=>p.nodes && p.nodes.length>=3)); // Geflecht füttern
+      renderTips(SURVEY);                                            // Tipps-Wand füllen
     })
     .catch(e=>console.warn("Umfrage-Daten nicht geladen:",e.message));
+}
+
+/* =========================================================================
+   GEFLECHT-ANIMATION — rotiert durch die Personen. Pro Person ein Netz aus
+   Stationen (nodes): Start "HHG", dann chronologisch begonnen, aber vernetzt.
+   Punkte ploppen nacheinander auf, Kanten wachsen, kurz halten, überblenden.
+   ------------------------------------------------------------------------- */
+function startNetAnim(people){
+  const cv=document.getElementById('netCanvas'); if(!cv||!people.length) return;
+  const ctx=cv.getContext('2d');
+  const yearEl=document.getElementById('netYear');
+  const capEl=document.getElementById('netCap');
+  const CSS=getComputedStyle(document.documentElement);
+  const col={
+    petrol:(CSS.getPropertyValue('--petrol')||'#2f7d8f').trim(),
+    green:(CSS.getPropertyValue('--green')||'#3ba676').trim(),
+    amber:(CSS.getPropertyValue('--amber')||'#c9862f').trim(),
+    line:(CSS.getPropertyValue('--line')||'#dbe4ea').trim(),
+    ink:(CSS.getPropertyValue('--ink')||'#1c2733').trim(),
+    muted:(CSS.getPropertyValue('--muted')||'#5b6b78').trim()
+  };
+  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2);
+  function resize(){
+    W=cv.clientWidth; H=cv.clientHeight;
+    cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  resize(); window.addEventListener('resize',resize);
+
+  /* Layout: Knoten grob von links (HHG) nach rechts (heute) verteilen, mit
+     vertikalem Versatz -> wirkt wie ein Geflecht, keine gerade Linie. */
+  function layout(nodes){
+    const n=nodes.length, padX=64, padY=54;
+    const usableW=Math.max(W-2*padX,120), usableH=Math.max(H-2*padY,80);
+    // deterministischer Pseudo-Zufall pro Person, damit es "organisch" aber stabil ist
+    let seed=nodes.reduce((a,x)=>a+x.t.length*7+x.t.charCodeAt(0),0);
+    const rnd=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+    return nodes.map((nd,i)=>{
+      const tx=n>1 ? i/(n-1) : .5;
+      const jitterY=(rnd()-.5)*.9;
+      const jitterX=(rnd()-.5)*.12;
+      return {
+        ...nd,
+        x:padX+Math.min(Math.max(tx+jitterX,0),1)*usableW,
+        y:padY+ (0.5+jitterY*0.5)*usableH,
+        r: nd.kind==='start'?7 : nd.kind==='field'?6.5 : 5
+      };
+    });
+  }
+  /* Kanten: chronologisch (i->i+1) plus ein paar "Querverbindungen" -> Geflecht. */
+  function edgesFor(pts){
+    const e=[]; for(let i=0;i<pts.length-1;i++) e.push([i,i+1]);
+    for(let i=0;i<pts.length-2;i++){ if((i%2)===0) e.push([i,i+2]); } // Quer-Streben
+    if(pts.length>3) e.push([0,pts.length-1]); // Start mit "heute" locker verbinden
+    return e;
+  }
+  function nodeColor(kind){
+    if(kind==='start') return col.amber;
+    if(kind==='field') return col.green;
+    return col.petrol;
+  }
+
+  let idx=0, pts=[], edges=[], t0=0, current=null;
+  const POP=170, HOLD=2600, FADE=650; // ms: pro-Knoten-Popp, Haltezeit, Überblendung
+  function loadPerson(i){
+    current=people[i]; pts=layout(current.nodes); edges=edgesFor(pts); t0=performance.now();
+    if(yearEl) yearEl.textContent = current.year ? "Abi-Jahrgang "+current.year : "Abi-Jahrgang ·";
+    if(capEl){
+      const parts=current.nodes.map(n=>n.t);
+      capEl.textContent = parts.join("  →  ");
+    }
+  }
+  function draw(now){
+    const el=now-t0;
+    ctx.clearRect(0,0,W,H);
+    const revealMs = reduce ? 0 : POP*pts.length;
+    const shown = reduce ? pts.length : Math.min(pts.length, 1+Math.floor(el/POP));
+    // Gesamt-Alpha für Überblendung am Ende
+    const total = revealMs+HOLD+FADE;
+    let alpha=1;
+    if(el>revealMs+HOLD) alpha=Math.max(0,1-(el-revealMs-HOLD)/FADE);
+    ctx.globalAlpha=alpha;
+
+    // Kanten
+    ctx.lineWidth=1.4;
+    edges.forEach(([a,b])=>{
+      if(a>=shown||b>=shown) return;
+      const pa=pts[a],pb=pts[b];
+      // Kante wächst mit dem später erscheinenden Knoten
+      const later=Math.max(a,b);
+      const kg = reduce?1:Math.min(1,(el-later*POP)/POP);
+      if(kg<=0) return;
+      const grad=ctx.createLinearGradient(pa.x,pa.y,pb.x,pb.y);
+      grad.addColorStop(0,nodeColor(pa.kind)); grad.addColorStop(1,nodeColor(pb.kind));
+      ctx.strokeStyle=grad; ctx.globalAlpha=alpha*0.34;
+      ctx.beginPath(); ctx.moveTo(pa.x,pa.y);
+      ctx.lineTo(pa.x+(pb.x-pa.x)*kg, pa.y+(pb.y-pa.y)*kg); ctx.stroke();
+    });
+    ctx.globalAlpha=alpha;
+
+    // Knoten + Labels
+    ctx.textBaseline='middle'; ctx.font='600 12px Inter, "Segoe UI", system-ui, sans-serif';
+    pts.forEach((p,i)=>{
+      if(i>=shown) return;
+      const pg = reduce?1:Math.min(1,(el-i*POP)/(POP*0.8));
+      const ease = pg<1 ? 1-Math.pow(1-pg,3) : 1; // easeOutCubic
+      const r=p.r*ease;
+      // Halo
+      ctx.beginPath(); ctx.fillStyle=nodeColor(p.kind); ctx.globalAlpha=alpha*0.16;
+      ctx.arc(p.x,p.y,r+5,0,7); ctx.fill();
+      // Punkt
+      ctx.beginPath(); ctx.globalAlpha=alpha; ctx.fillStyle=nodeColor(p.kind);
+      ctx.arc(p.x,p.y,r,0,7); ctx.fill();
+      // Label
+      if(ease>0.6){
+        ctx.globalAlpha=alpha*Math.min(1,(ease-0.6)/0.4);
+        ctx.fillStyle=p.kind==='start'?col.ink:col.muted;
+        const tw=ctx.measureText(p.t).width;
+        let lx=p.x - tw/2, ly=p.y - r - 9;
+        if(ly<12){ ly=p.y+r+12; }              // wenn oben kein Platz: unter den Punkt
+        lx=Math.max(6,Math.min(W-tw-6,lx));    // im Bild halten
+        ctx.fillText(p.t,lx,ly);
+      }
+    });
+    ctx.globalAlpha=1;
+
+    if(el>=total){ idx=(idx+1)%people.length; loadPerson(idx); }
+    requestAnimationFrame(draw);
+  }
+  loadPerson(0);
+  requestAnimationFrame(draw);
+}
+
+/* =========================================================================
+   TIPPS-WAND — anonyme Weisheiten aus der Umfrage, kuratiert nach Länge.
+   ------------------------------------------------------------------------- */
+function renderTips(people){
+  const wrap=document.getElementById('tipWall'); if(!wrap) return;
+  let tips=people.map(p=>(p.tip||"").trim())
+    .filter(t=>t.length>=12 && t.length<=600 && !/https?:|@/.test(t)); // kein Link/Mail
+  // Dedup grob
+  const seen=new Set(); tips=tips.filter(t=>{const k=t.toLowerCase().slice(0,40); if(seen.has(k))return false; seen.add(k); return true;});
+  if(!tips.length){ wrap.closest('section')?.style.setProperty('display','none'); return; }
+  wrap.innerHTML="";
+  tips.forEach(t=>{
+    const d=document.createElement('blockquote'); d.className='tip';
+    d.textContent=t;
+    wrap.appendChild(d);
+  });
+  const c=document.getElementById('tipCount'); if(c) c.textContent=tips.length;
 }
 
 </script>
