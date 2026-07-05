@@ -163,23 +163,23 @@ if(location.hash){
 <section id="wege">
   <div class="wrap">
     <h2><span class="num">01</span>Wohin gehen die Leute?</h2>
-    <p class="sub">Abitur-Jahrgang <strong>2021</strong>, anonym ausgewertet. nach <strong>Fach</strong> und <strong>Stadt</strong> sortiert. </p>
+    <p class="sub">Anonym ausgewertet, nach <strong>Fachrichtung</strong> und <strong>Stadt</strong> sortiert. </p>
 
     <div class="filterbar">
       <div class="segmented" id="sourceSwitch" role="tablist" aria-label="Datenquelle">
-        <button class="seg active" data-src="fallback" role="tab" aria-selected="true">Recherchiert</button>
-        <button class="seg" data-src="survey" role="tab" aria-selected="false">Aus Umfrage</button>
+        <button class="seg" data-src="fallback" role="tab" aria-selected="false">Recherchiert</button>
+        <button class="seg active" data-src="survey" role="tab" aria-selected="true">Aus Umfrage</button>
       </div>
       <span class="filternote" id="filterNote"></span>
     </div>
 
     <div class="stats" id="statRow"></div>
 
-    <h3 style="margin:20px 0 8px;font-size:1rem;color:#15212c">Nach Fach</h3>
+    <h3 style="margin:20px 0 8px;font-size:1rem;color:#15212c">Nach Fachrichtung</h3>
     <div class="table-scroll">
       <table id="uniTable">
         <thead>
-          <tr><th>Studienfach</th><th>Wo</th><th class="barcell">Wie viele</th></tr>
+          <tr><th>Studienfach / Fachrichtung</th><th>Wo</th><th class="barcell">Wie viele</th></tr>
         </thead>
         <tbody id="uniBody"></tbody>
       </table>
@@ -279,7 +279,7 @@ if(location.hash){
 <footer>
   <div class="wrap">
     <p><strong>Heinrich-Hertz-Gymnasium Berlin</strong> - Absolvent:innentreffen · Vortrag „Auslandsstudium, Stipendien, Startup - die Karte, die niemand zeigt."</p>
-    <p>Nachschlagewerk zum Vortrag. Alle Links öffnen offizielle Quellen. Fragen: <a href="mailto:eduardhaertel@gmail.com">eduardhaertel@gmail.com</a></p>
+    <p>Alle Links öffnen offizielle Quellen. Fragen: <a href="mailto:eduardhaertel@gmail.com">eduardhaertel@gmail.com</a></p>
   </div>
 </footer>
 
@@ -349,7 +349,7 @@ const FALLBACK_PEOPLE = [
 
 /* Zwei getrennte Quellen - nie gemischt, damit keine Doppelzählung entsteht. */
 let SURVEY = [];                 // wird vom CSV-Loader gefüllt
-let CURRENT_SOURCE = "fallback"; // "fallback" | "survey"
+let CURRENT_SOURCE = "survey";   // "fallback" | "survey" — Standard: Umfrage
 
 /* ---- Render-Pipeline ---- */
 function render(){
@@ -453,7 +453,7 @@ function setSource(src){
 }
 segs.forEach(b=>b.addEventListener('click',()=>setSource(b.dataset.src)));
 
-render(); // Standard: Recherchiert (Seite sofort da)
+render(); // Standard: Umfrage (füllt sich, sobald das CSV geladen ist)
 
 /* ---- CSV-Parser (robust: Anführungszeichen, Kommas, Zeilenumbrüche) ---- */
 function parseCSVRaw(text){
@@ -478,51 +478,100 @@ function parseCSVRaw(text){
 /* --- Synonym-Wörterbuch: räumt Freitext-Varianten & Tippfehler auf, damit die
    Bündelung sauber bleibt. Unbekanntes bleibt unverändert (nur Groß/Klein
    normalisiert). Erweitern nach Bedarf. --- */
-/* Kanonische Labels: Schlüssel = Anzeige-Text, Werte = erkannte Varianten. */
-const FIELD_ALIASES = {
-  "Informatik/IT":["informatik","it","cs","computer science","computerwissenschaft","informatics","software","softwareentwicklung","angewandte informatik","mathematische informatik"],
-  "Physik":["physik","physics"],
-  "Medizin":["medizin","humanmedizin","medicine","med"],
-  "Mathematik":["mathematik","mathe","maths","math","mathematics","mathematik und geographie"],
-  "Jura":["jura","rechtswissenschaft","recht","law","rechtswissenschaften"],
-  "Ingenieurwesen":["ingenieurwesen","ingenieur","engineering","maschinenbau","mechanical engineering","mechanical","chemieingenieurwesen","chemical engineering","verfahrenstechnik","robotik","robotics","elektrotechnik","electrical engineering","bauwesen","bauingenieurwesen","civil engineering","energietechnik","luft- und raumfahrt","aerospace","schiffs- und meerestechnik","schiffstechnik","meerestechnik","schiffbau"],
-  "Chemie":["chemie","chemistry"],
-  "BWL/Wirtschaft":["bwl","betriebswirtschaft","wirtschaft","business","management","vwl","volkswirtschaft","economics","business administration"],
-  "Psychologie":["psychologie","psychology"],
-  "Biologie":["biologie","biology","bio"],
-  "Wirtschaftsinformatik":["wirtschaftsinformatik","business informatics"]
-};
+/* Freitext-Fächer -> saubere Sammel-Kategorien. Matching per STICHWORT (Teilstring),
+   nicht per exakter Gleichheit -> "Master of Mathematics", "Mathe, Sport" usw. werden
+   erkannt. REIHENFOLGE zählt: spezifisch vor allgemein (z.B. Wirtschaftsinformatik
+   vor Informatik). Erste passende Regel gewinnt. */
+const FIELD_RULES = [
+  ["Wirtschaftsinformatik",["wirtschaftsinformatik","business informatics"]],
+  ["Informatik/IT",["informatik","computer science","computer engineering","technische informatik","machine intelligence","machine learning","künstliche intelligenz","artificial intelligence","informatics","devops","software","data analyst","data science"," ai ","it "]],
+  ["Physik",["physik","physics"]],
+  ["Medizin",["medizin","humanmedizin","medicine","arzt","ärztin","zahnmedizin"]],
+  ["Mathematik",["mathematik","mathe","maths","mathematics"]],
+  ["Jura",["jura","rechtswissenschaft","recht","law "]],
+  ["Ingenieurwesen",["ingenieur","engineering","maschinenbau","maschineningenieur","verfahrenstechnik","robotics","robotik","elektrotechnik","bauwesen","bauingenieur","energietechnik","luft- und raumfahrt","luft und raumfahrt","raumfahrttechnik","aerospace","schiffs- und meerestechnik","meerestechnik","schiffbau","communication systems","verkehrswesen","verkehrsingenieur","verkehr","thermal"]],
+  ["Chemie",["chemie","chemistry","synthesechemie","chemical"]],
+  ["Biologie",["biotechnologie","biologie","biology"]],
+  ["BWL/Wirtschaft",["bwl","betriebswirtschaft","business administration","business","außenwirtschaft","aussenwirtschaft","wirtschaft","management","economics"]],
+  ["VWL/Politik",["vwl","volkswirtschaft","politikwissenschaft","politik"]],
+  ["Psychologie",["psychologie","psychology"]],
+  ["Geowissenschaften",["geographie","geografie","geologie","bodenkunde","geowissenschaft"]],
+  ["Geschichte",["geschichte","history","archäologie","archaeologie","archaeology"]],
+  ["Agrarwissenschaften",["agrarwissenschaft","agrar"]],
+  ["Grundschulpädagogik",["grundschulpädagogik","grundschulpaedagogik"]],
+  ["Schauspiel",["schauspiel","acting","theater"]]
+];
+/* Wörter, die KEIN Studienfach sind (Job-/Status-Antworten) -> nicht anzeigen. */
+const FIELD_JUNK = ["arbeiten / job","arbeiten/job","job","arbeitslos","studium","student","büro","sonstiges"];
+/* Freitext vor dem Matching entrümpeln: Grad/Ballast weg, damit Kern übrig bleibt. */
+function cleanFieldText(v){
+  return v.replace(/^(zuletzt|aktuell|derzeit|momentan)\s+/i,"")
+          .replace(/\b(bachelor|master|msc|m\.sc\.|bsc|b\.sc\.|of science|of arts|of|ba|ma|diplom|promotion|phd|studium)\b/gi," ")
+          .replace(/\s+/g," ").trim();
+}
+/* Lehramt separat: unter dem Hauptfach bündeln, aber als (Lehramt) markieren. */
+function normField(v){
+  if(!v) return "";
+  const rawLow=v.toLowerCase();
+  if(FIELD_JUNK.some(j=>rawLow.trim()===j)) return ""; // reine Job-/Status-Angabe
+  const isLehramt=/lehr(amt|er|erin|kraft)|gymnasiallehr|oberstufenkoord/i.test(v);
+  const s=" "+cleanFieldText(v).toLowerCase()+" ";
+  for(const [label,keys] of FIELD_RULES){
+    if(keys.some(k=>s.includes(k))) return isLehramt ? label+" (Lehramt)" : label;
+  }
+  // Nichts erkannt: nur Lehramt bekannt -> generisches Lehramt, sonst Originaltext.
+  if(isLehramt) return "Lehramt";
+  return v.trim();
+}
+
 const CITY_ALIASES = {
   "München":["münchen","munich","muenchen"],
   "Köln":["köln","cologne","koeln"],
   "London":["london"],
   "Wien":["wien","vienna"],
-  "Zürich":["zürich","zurich","zuerich"]
+  "Zürich":["zürich","zurich","zuerich"],
+  "Frankfurt am Main":["frankfurt am main","frankfurt/main"]
 };
-function canon(val, table){
-  if(!val) return val;
-  const s=val.trim().toLowerCase();
-  for(const key in table){ if(table[key].includes(s)) return key; } // Key = fertiges Label
-  return val.trim(); // Unbekanntes: Original beibehalten
+function titleCase(s){
+  return s.toLowerCase().replace(/(^|[\s\-\/])(\p{L})/gu,(m,sep,ch)=>sep+ch.toUpperCase());
 }
-const normField = v => canon(v, FIELD_ALIASES);
-const normCity  = v => canon(v, CITY_ALIASES);
+function normCity(val){
+  if(!val) return "";
+  const s=val.trim().toLowerCase();
+  for(const key in CITY_ALIASES){ if(CITY_ALIASES[key].some(a=>s.includes(a))) return key; }
+  return titleCase(val.trim());
+}
 
-/* Ort grob & anonym machen: kleine/ungenaue Umschreibungen ("bei X", "Kreis X",
-   Dörfer) auf eine Region abbilden, damit keine Einzelperson erkennbar wird.
-   Bekannte große Städte bleiben stehen. Erweitern nach Bedarf. */
+/* Ort grob & anonym machen: Freitext-Ballast weg, kleine/ungenaue Orte auf eine
+   Region abbilden, damit keine Einzelperson erkennbar wird. Große Städte bleiben. */
 const CITY_REGION = {
-  "Region Berlin/Brandenburg":["panketal","bernau","potsdam","brandenburg","oranienburg","strausberg","königs wusterhausen"],
-  "Norddeutschland":["neubrandenburg","greifswald","rostock","stralsund","schwerin"]
+  "Region Berlin/Brandenburg":["panketal","bernau","potsdam","brandenburg","oranienburg","strausberg","königs wusterhausen","zeuthen","schildow","kloster zinna","jüterbog","juterbog","erkner","falkensee","teltow","hennigsdorf"],
+  "Norddeutschland":["neubrandenburg","greifswald","rostock","stralsund","schwerin","fritzlar"],
+  "Rhein/Ruhr":["erftstadt","oberstedten","oberursel"]
 };
+/* Bekannte Großstädte: falls im Freitext genannt, darauf reduzieren (bündelt sauber). */
+const KNOWN_CITIES=["berlin","hamburg","münchen","munich","köln","frankfurt","zürich","zurich","bern","london","paris","wien","bonn","dresden","aachen","ulm","kopenhagen","wismar","stuttgart","leipzig","heidelberg","mainz","münster","lille","göteborg","lübeck"];
+/* Offensichtliche Nicht-Orte (Firmen/Status) -> als Ort leer lassen. */
+const NOT_A_CITY=["sap","home office","homeoffice","remote","keine","-","n/a","na"];
 function coarseCity(v){
   if(!v) return "";
   let s=v.trim().toLowerCase();
-  s=s.replace(/^(bei|nahe|raum|kreis|nähe|naehe)\s+/,"").trim(); // "Bei Neubrandenburg" -> "neubrandenburg"
+  s=s.replace(/\(.*?\)/g,"")                       // Klammer-Zusätze weg: "Berlin (mit Reisetätigkeit)" -> "Berlin"
+     .replace(/^(bei|nahe|raum|kreis|nähe|naehe|remote aus|home ?office aus)\s+/,"")
+     .replace(/^ich wohne in.*?arbeite in\s+/,"")  // ganze Sätze -> Arbeitsort
+     .trim();
+  // 1) Kleine Orte / ungenaue Umschreibungen -> Region (Anonymität)
   for(const region in CITY_REGION){
     if(CITY_REGION[region].some(k=>s.includes(k))) return region;
   }
-  return normCity(v.trim().replace(/^(bei|nahe|raum|kreis|nähe|naehe)\s+/i,"").trim());
+  // 2) Bekannte Großstadt im Text -> darauf reduzieren.
+  //    Läuft VOR der Deutschland-Prüfung: "Berlin, Deutschland" -> Berlin, nicht Deutschland.
+  for(const c of KNOWN_CITIES){ if(s.includes(c)) return normCity(c); }
+  // 3) Nur "Deutschland"/"Germany" (keine Stadt genannt) -> eigene Sammel-Kategorie.
+  if(/^(deutschland|germany)$/.test(s)) return "Deutschland (Ort offen)";
+  // 4) Offensichtlicher Nicht-Ort (z.B. "SAP") oder Zahlen/Sonderzeichen -> ohne Ort.
+  if(!s || NOT_A_CITY.includes(s) || /[^a-zäöüß \-\/]/i.test(s) || s.length<3) return "";
+  return normCity(s);
 }
 
 /* Header einer Frage-Spalte einem Schema-Feld zuordnen (tolerant, Stichwörter).
