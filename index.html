@@ -7,7 +7,7 @@
 <script>
 /* QR-Fix: Der alte QR-Code zeigt auf …/#ressourcen und würde nach unten
    scrollen. Wir fangen JEDEN eingehenden Anker ab, entfernen ihn und landen
-   oben auf der Startseite — so muss der gedruckte QR nicht neu erstellt werden.
+   oben auf der Startseite - so muss der gedruckte QR nicht neu erstellt werden.
    Läuft vor dem Rendern, damit der Browser gar nicht erst hinspringt. */
 if(location.hash){
   history.replaceState(null,"",location.pathname+location.search);
@@ -56,7 +56,7 @@ if(location.hash){
   .hook b{color:var(--ink)}
   .hook .dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex:none}
 
-  /* GEFLECHT-ANIMATION — nur die verbundenen Punkte, auf hellem Hintergrund */
+  /* GEFLECHT-ANIMATION - nur die verbundenen Punkte, auf hellem Hintergrund */
   .netfig{margin:30px 0 0;padding:0;position:relative}
   .netfig-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 6px}
   .netfig-title{color:#15212c;font-weight:800;font-size:clamp(1.1rem,2.6vw,1.5rem);letter-spacing:-.02em}
@@ -66,7 +66,7 @@ if(location.hash){
   .netfig-cap{margin:8px 0 0;color:var(--muted);font-size:.85rem}
   @media(max-width:640px){ #netCanvas{height:260px} }
 
-  /* TIPPS-WAND — kompakte Zitat-Chips */
+  /* TIPPS-WAND - kompakte Zitat-Chips */
   .tipwall{columns:230px 4;column-gap:10px;margin-top:8px}
   .tip{break-inside:avoid;margin:0 0 10px;background:var(--panel);border:1px solid var(--line);
     border-radius:10px;padding:10px 12px;color:var(--ink);font-size:.85rem;line-height:1.45;
@@ -184,7 +184,7 @@ if(location.hash){
         <span class="netfig-year" id="netYear">·</span>
       </div>
       <canvas id="netCanvas"></canvas>
-      <figcaption class="netfig-cap" id="netCap">Jeder Punkt eine Station. Chronologisch begonnen — und doch ein Geflecht.</figcaption>
+      <figcaption class="netfig-cap" id="netCap">Jeder Punkt eine Station. Chronologisch begonnen - und doch ein Geflecht.</figcaption>
     </figure>
   </div>
 </header>
@@ -232,16 +232,16 @@ if(location.hash){
 <section id="tipps">
   <div class="wrap">
     <h2><span class="num">02</span>Was Ehemalige euch mitgeben</h2>
-    <p class="sub">Aus den Antworten der Umfrage — verdichtet auf das Wesentliche.</p>
+    <p class="sub">Aus den Antworten der Umfrage - verdichtet auf das Wesentliche.</p>
     <div class="tipwall">
-      <blockquote class="tip">Geht ins Ausland, solange es einfach ist. Eine andere Stadt, ein anderes Land — das nimmt dir später niemand mehr so leicht.</blockquote>
-      <blockquote class="tip">Umwege sind okay. Ein Jahr aussetzen, das Fach wechseln, nicht wissen was kommt — nichts davon ist verloren.</blockquote>
-      <blockquote class="tip">Am Ende kommt eh alles anders als geplant — und meistens genau richtig. Wählt einen Weg, der euch Spaß macht, nicht den „vernünftigsten".</blockquote>
-      <blockquote class="tip">Sucht euch früh eine:n Mentor:in — jemanden, der spannende Dinge tut und euch anleiten kann.</blockquote>
-      <blockquote class="tip">Traut euch zu fragen. Oft antworten selbst wildfremde Menschen — und plötzlich öffnen sich Türen.</blockquote>
-      <blockquote class="tip">Der Schnitt ist weniger wichtig, als ihr denkt. Für viele Wege zählt er kaum — macht euch in der Schule nicht verrückt.</blockquote>
-      <blockquote class="tip">Bleibt neugierig und sagt öfter Ja als Nein. Die kommenden Jahre sind die freiesten — lasst nichts aus.</blockquote>
-      <blockquote class="tip">Hört auf euer Herz — und lasst euch von niemandem einreden, was eure Zukunft sein soll.</blockquote>
+      <blockquote class="tip">Geht ins Ausland, solange es einfach ist. Eine andere Stadt, ein anderes Land - das nimmt dir später niemand mehr so leicht.</blockquote>
+      <blockquote class="tip">Umwege sind okay. Ein Jahr aussetzen, das Fach wechseln, nicht wissen was kommt - nichts davon ist verloren.</blockquote>
+      <blockquote class="tip">Am Ende kommt eh alles anders als geplant - und meistens genau richtig. Wählt einen Weg, der euch Spaß macht, nicht den „vernünftigsten".</blockquote>
+      <blockquote class="tip">Sucht euch früh eine:n Mentor:in - jemanden, der spannende Dinge tut und euch anleiten kann.</blockquote>
+      <blockquote class="tip">Traut euch zu fragen. Oft antworten selbst wildfremde Menschen - und plötzlich öffnen sich Türen.</blockquote>
+      <blockquote class="tip">Der Schnitt ist weniger wichtig, als ihr denkt. Für viele Wege zählt er kaum - macht euch in der Schule nicht verrückt.</blockquote>
+      <blockquote class="tip">Bleibt neugierig und sagt öfter Ja als Nein. Die kommenden Jahre sind die freiesten - lasst nichts aus.</blockquote>
+      <blockquote class="tip">Hört auf euer Herz - und lasst euch von niemandem einreden, was eure Zukunft sein soll.</blockquote>
     </div>
   </div>
 </section>
@@ -398,7 +398,7 @@ const FALLBACK_PEOPLE = [
 
 /* Zwei getrennte Quellen - nie gemischt, damit keine Doppelzählung entsteht. */
 let SURVEY = [];                 // wird vom CSV-Loader gefüllt
-let CURRENT_SOURCE = "survey";   // "fallback" | "survey" — Standard: Umfrage
+let CURRENT_SOURCE = "survey";   // "fallback" | "survey" - Standard: Umfrage
 
 /* ---- Render-Pipeline ---- */
 function render(){
@@ -655,7 +655,7 @@ function classifyHeader(h){
 }
 
 /* ===== GEFLECHT: Stationen pro Person aus Feldern + Freitext ableiten ==========
-   Idee: Start immer "HHG", dann chronologisch, was an Info da ist (flexibel — nicht
+   Idee: Start immer "HHG", dann chronologisch, was an Info da ist (flexibel - nicht
    jede:r hat studiert). Institutionen dürfen namentlich stehen; Orte in derselben
    groben Granularität wie die Tabellen; eigene Firmen bleiben außen vor. */
 
@@ -761,7 +761,7 @@ if(CSV_URL){
 }
 
 /* =========================================================================
-   GEFLECHT-ANIMATION — rotiert durch die Personen. Pro Person ein Netz aus
+   GEFLECHT-ANIMATION - rotiert durch die Personen. Pro Person ein Netz aus
    Stationen (nodes): Start "HHG", dann chronologisch begonnen, aber vernetzt.
    Punkte ploppen nacheinander auf, Kanten wachsen, kurz halten, überblenden.
    ------------------------------------------------------------------------- */
