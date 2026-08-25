@@ -83,10 +83,6 @@ if(location.hash){
 
   /* FILTER BAR */
   .filterbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:0 0 20px}
-  .segmented{display:inline-flex;background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:var(--shadow)}
-  .seg{border:none;background:transparent;padding:8px 18px;border-radius:999px;font-size:.9rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s}
-  .seg.active{background:var(--petrol);color:#fff;box-shadow:0 2px 8px rgba(47,125,143,.3)}
-  .seg:not(.active):hover{color:var(--ink)}
   .toggle{display:inline-flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer;font-size:.92rem;font-weight:600;color:var(--ink);box-shadow:var(--shadow);user-select:none;transition:opacity .15s}
   .toggle input{width:16px;height:16px;accent-color:var(--petrol);cursor:pointer}
   .toggle:hover{border-color:var(--petrol)}
@@ -142,9 +138,10 @@ if(location.hash){
   .callout strong{color:var(--petrol-d)}
 
   /* GROW + SURVEY */
-  .growbox{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(180deg,#eef6f8,#ffffff);border:1px solid var(--line);border-left:4px solid var(--petrol);border-radius:12px;padding:13px 16px;margin:16px 0 0;color:var(--ink);font-size:.9rem;box-shadow:var(--shadow)}
-  .growbox .growicon{font-size:1.3rem;line-height:1.3;flex:none}
-  .growbox strong{color:var(--petrol-d)}
+  .growbox{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,#e4f0f3,#d7e9ee);border:1px solid #b9d5dd;border-left:4px solid var(--petrol);border-radius:12px;padding:15px 18px;margin:34px 0 0;color:var(--petrol-d);font-size:.9rem;box-shadow:0 1px 2px rgba(33,90,104,.06),0 3px 12px rgba(33,90,104,.09)}
+  .growbox strong{color:#17454f}
+  .growbox .growlink{color:#17454f;font-weight:700;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:2px}
+  .growbox .growlink:hover{color:var(--petrol)}
   .surveybox{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
   .surveytext{flex:1;min-width:240px}
   .btn.big{padding:15px 26px;font-size:1.05rem;white-space:nowrap}
@@ -196,10 +193,6 @@ if(location.hash){
     <p class="sub">Anonym ausgewertet, nach <strong>Fachrichtung</strong> und <strong>Stadt</strong> sortiert. </p>
 
     <div class="filterbar">
-      <div class="segmented" id="sourceSwitch" role="tablist" aria-label="Datenquelle">
-        <button class="seg" data-src="fallback" role="tab" aria-selected="false">Recherchiert</button>
-        <button class="seg active" data-src="survey" role="tab" aria-selected="true">Aus Umfrage</button>
-      </div>
       <span class="filternote" id="filterNote"></span>
     </div>
 
@@ -215,14 +208,13 @@ if(location.hash){
       </table>
     </div>
 
-    <h3 style="margin:20px 0 8px;font-size:1rem;color:#15212c">Nach Stadt - wer bleibt, wer geht</h3>
+    <h3 style="margin:20px 0 8px;font-size:1rem;color:#15212c">Nach Stadt</h3>
     <div class="bundle" id="cityBundle"></div>
 
-
     <div class="growbox">
-      <span class="growicon">📈</span>
       <div>
         <strong>Diese Karte wächst jedes Jahr.</strong> Bei jedem Absolvent:innentreffen kommen neue Wege dazu.
+        Noch nicht ausgefüllt? <a class="growlink" href="https://forms.gle/hitsunMB6SJguLji6" target="_blank" rel="noopener">Hier geht es zur Umfrage</a>.
       </div>
     </div>
   </div>
@@ -249,7 +241,7 @@ if(location.hash){
 <!-- ============ RESSOURCEN ============ -->
 <section id="ressourcen">
   <div class="wrap">
-    <h2><span class="num">03</span>Die Ressourcen</h2>
+    <h2><span class="num">03</span>Ressourcen für Schüler</h2>
 
     <div class="rescat">
       <h3>Begabtenförderungswerke <span class="note"></span></h3>
@@ -306,7 +298,7 @@ if(location.hash){
     </div>
 
     <div class="disclaimer">
-      <span class="kicker">Datenschutz:</span> Diese Seite zeigt bewusst <strong>keine Namen</strong> aktueller Absolvent:innen. Die Wege sind anonym aggregiert. Einzelne recherchierte Angaben können ungenau sein und wurden nicht abschließend verifiziert. Korrekturen jederzeit willkommen.
+      <span class="kicker">Datenschutz:</span> Diese Seite zeigt bewusst <strong>keine Namen</strong>. Alle Angaben stammen aus der freiwilligen Umfrage und sind anonym aggregiert. Korrekturen jederzeit willkommen.
     </div>
   </div>
 </section>
@@ -321,14 +313,14 @@ if(location.hash){
       <span class="ct-label">Fragen / Kontakt</span>
       <a href="mailto:eduardhaertel@gmail.com?subject=Frage%20(HHG)">eduardhaertel@gmail.com</a>
     </div>
-    <p class="contacthint">Einige Ehemalige sind ansprechbar - frag einfach, ich leite es weiter.</p>
+    <p class="contacthint">Einige Ehemalige haben sich bereit erklärt, für Fragen zur Verfügung zu stehen. Anfragen werden auf Wunsch gern weitergeleitet.</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <p><strong>Heinrich-Hertz-Gymnasium Berlin</strong> - Absolvent:innentreffen · Vortrag „Auslandsstudium, Stipendien, Startup - die Karte, die niemand zeigt."</p>
-    <p>Alle Links öffnen offizielle Quellen. Fragen: <a href="mailto:eduardhaertel@gmail.com">eduardhaertel@gmail.com</a></p>
+    <p>Alle Links öffnen offizielle Quellen.</p>
   </div>
 </footer>
 
@@ -359,55 +351,12 @@ if(location.hash){
 const SHOW_NAMES = false;
 const CSV_URL = "https://docs.google.com/spreadsheets/d/1MQOyfQI0sS6ZgrpDLmATZxOLOKVUCRlbM1XoKqVwhqg/gviz/tq?tqx=out:csv";
 
-const FALLBACK_PEOPLE = [
-  // ---- Abi-Jahrgang 2021 ----
-  {name:"Eduard Härtel",     field:"Physik",           city:"Toronto",          year:2021, group:"2021", src:"v"},
-  {name:"Lidija Petrovic",   field:"Physik",           city:"Freiburg",         year:2021, group:"2021", src:"v"},
-  {name:"Tamino Wettengel",  field:"Physik",           city:"Berlin",           year:2021, group:"2021", src:"v/w"},
-  {name:"David Uptmoor",     field:"Physik",           city:"Berlin",           year:2021, group:"2021", src:"w"},
-  {name:"Julian Felber",     field:"Medizin",          city:"Berlin",           year:2021, group:"2021", src:"v/w"},
-  {name:"Jiri Lemberg",      field:"Medizin",          city:"Heidelberg",       year:2021, group:"2021", src:"v"},
-  {name:"Philip Piefel",     field:"Informatik/IT",    city:"Berlin",           year:2021, group:"2021", src:"v/w"},
-  {name:"Joshua Schicht",    field:"Informatik/IT",    city:"Berlin",           year:2021, group:"2021", src:"v"},
-  {name:"Yorick Zeschke",    field:"Informatik/IT",    city:"Amsterdam→London", year:2021, group:"2021", src:"w"},
-  {name:"Matilda Lu",        field:"Jura",             city:"Berlin",           year:2021, group:"2021", src:"v"},
-  {name:"Anand Chuluunkhuu", field:"Ingenieurwesen",   city:"Berlin",           year:2021, group:"2021", src:"v/w"},
-  {name:"Möne Arndt",        field:"Ingenieurwesen",   city:"Berlin",           year:2021, group:"2021", src:"v"},
-  {name:"Paul Siewert",      field:"Mathematik",       city:"Cambridge",        year:2021, group:"2021", src:"v/w"},
-  {name:"Bastian Reinhardt", field:"Bundeswehr",       city:"",                 year:2021, group:"2021", src:"v"},
-  // ---- Jahrgang 2021, Weg noch in Klärung ----
-  ...["Agnelo Pilgram","David Vasquez","Till Rehman","Annemarie Wagner","Arlo Petereit","Clara Sandig",
-     "Daniel Fadeev","Domeneque Ihde","Elena Hapka","Henrike Witt","Henrike Marzahn","Karl-Friedrich Guddat",
-     "Huy Phan Dong","Lilly Purtz","Lukas Schwager","Ole Karge","Sheng D.","Timon Arndt","Tom Romeo Doil",
-     "Chioma Tischendorf","Max Reinhardt","Richard Otto Winne","Richard Otto Wille","Quynh Anh",
-     "Ali Ahmed Amroune","Thuy Lai","Minh Ngo","Arthur Gerhardt","Timon Arnold","Adrian Bufe","Philip Datchev"]
-     .map(n=>({name:n,field:"",city:"",year:2021,group:"2021",src:"?"})),
-  // ---- Vortragende aus dem Vortragsplan (Ehemalige, weitere Jahrgänge) ----
-  {name:"Simon Giesel",     field:"Physik",           city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Narae Song",       field:"Medizin",          city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Raphael Cuadros",  field:"Psychologie",      city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Philipp Bannasch", field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Felix Fliegner",   field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Henrik Töpelt",    field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Carsten Eckert",   field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Siegfried Schulz", field:"Ingenieurwesen",   city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Martin Möllmann",  field:"Startup/Gründung", city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Michael Frank",    field:"Geowissenschaften",city:"", year:null, group:"vortragende", src:"plan"},
-  {name:"Jonas Wanke",      field:"Informatik/IT",    city:"", year:null, group:"vortragende", src:"plan"}
-];
-
-/* Zwei getrennte Quellen - nie gemischt, damit keine Doppelzählung entsteht. */
+/* Einzige Quelle: die Umfrage-Antworten aus dem Google Sheet. */
 let SURVEY = [];                 // wird vom CSV-Loader gefüllt
-let CURRENT_SOURCE = "survey";   // "fallback" | "survey" - Standard: Umfrage
 
 /* ---- Render-Pipeline ---- */
 function render(){
-  let pool;
-  if(CURRENT_SOURCE==="survey"){
-    pool = SURVEY.slice();                       // nur Umfrage-Antworten
-  }else{
-    pool = FALLBACK_PEOPLE.slice();              // Jahrgang 2021 + Vortragende zusammen
-  }
+  const pool = SURVEY.slice();                   // nur Umfrage-Antworten
   const known = pool.filter(p=>p.field);
   const unknownCount = pool.length - known.length;
 
@@ -416,11 +365,15 @@ function render(){
   const fields = new Set(known.map(p=>p.field));
   const inBerlin = known.filter(p=>p.city==="Berlin").length;
   const outside  = known.filter(p=>p.city && p.city!=="Berlin").length;
+  // Anteil statt Bruch: ein zweiter Nenner neben "Personen erfasst" wirkt sonst
+  // wie ein Widerspruch (nicht alle Antworten enthalten eine Ortsangabe).
+  const withCity = inBerlin + outside;
+  const berlinShare = withCity>0 ? Math.round(inBerlin/withCity*100)+" %" : "–";
   const statData=[
     [pool.length,"Personen erfasst"],
     [fields.size,"verschiedene Fächer"],
     [cities.size,"Studienorte"],
-    [(inBerlin+outside)>0 ? inBerlin+"/"+(inBerlin+outside) : "–","in Berlin"]
+    [berlinShare,"in Berlin"]
   ];
   const row=document.getElementById('statRow'); row.innerHTML="";
   statData.forEach(([b,l])=>{
@@ -483,24 +436,10 @@ function render(){
 
   /* Hinweis-Text */
   const note=document.getElementById('filterNote');
-  if(CURRENT_SOURCE==="survey"){
-    note.textContent = SURVEY.length
-      ? SURVEY.length+" Antworten aus der Umfrage."
-      : "Noch keine Umfrage-Antworten - schau später wieder rein.";
-  }else{
-    const nV = FALLBACK_PEOPLE.filter(p=>p.group==="vortragende").length;
-    note.textContent = "inkl. "+nV+" Vortragende weiterer Jahrgänge.";
-  }
+  note.textContent = SURVEY.length
+    ? SURVEY.length+" Antworten aus der Umfrage."
+    : "Noch keine Umfrage-Antworten - schau später wieder rein.";
 }
-
-/* ---- Steuerung: Quellen-Switch ---- */
-const segs=document.querySelectorAll('#sourceSwitch .seg');
-function setSource(src){
-  CURRENT_SOURCE=src;
-  segs.forEach(b=>{const on=b.dataset.src===src;b.classList.toggle('active',on);b.setAttribute('aria-selected',on);});
-  render();
-}
-segs.forEach(b=>b.addEventListener('click',()=>setSource(b.dataset.src)));
 
 render(); // Standard: Umfrage (füllt sich, sobald das CSV geladen ist)
 
@@ -751,9 +690,8 @@ if(CSV_URL){
   fetch(CSV_URL,{cache:"no-store"})
     .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
     .then(txt=>{
-      // In SURVEY ablegen (getrennt vom Fallback -> keine Doppelzählung).
       SURVEY = parseCSV(txt).filter(p=>p.field||p.city);
-      if(CURRENT_SOURCE==="survey") render(); // aktualisieren, falls Umfrage-Ansicht aktiv
+      render();
       console.log("Umfrage-Antworten geladen:",SURVEY.length);
       startNetAnim(SURVEY.filter(p=>p.nodes && p.nodes.length>=3)); // Geflecht füttern
     })
@@ -765,8 +703,15 @@ if(CSV_URL){
    Stationen (nodes): Start "HHG", dann chronologisch begonnen, aber vernetzt.
    Punkte ploppen nacheinander auf, Kanten wachsen, kurz halten, überblenden.
    ------------------------------------------------------------------------- */
-function startNetAnim(people){
-  const cv=document.getElementById('netCanvas'); if(!cv||!people.length) return;
+function startNetAnim(peopleIn){
+  const cv=document.getElementById('netCanvas'); if(!cv||!peopleIn.length) return;
+  // Reihenfolge pro Seitenaufruf mischen (Fisher-Yates), damit nicht immer
+  // dieselbe Person zuerst kommt und die Abfolge nicht chronologisch wirkt.
+  const people=peopleIn.slice();
+  for(let i=people.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [people[i],people[j]]=[people[j],people[i]];
+  }
   const ctx=cv.getContext('2d');
   const yearEl=document.getElementById('netYear');
   const capEl=document.getElementById('netCap');
